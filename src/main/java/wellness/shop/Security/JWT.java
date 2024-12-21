@@ -4,7 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import wellness.shop.Models.Users.Enums.Role;
 
 import java.nio.charset.StandardCharsets;
@@ -14,9 +16,11 @@ import java.util.UUID;
 @Component
 public class JWT {
 
-    private static final String SECRET_KEY = "sdfsadfsadfasdfasdfasdfasdfasdfasdf";
-
-    public static Claims decodeJwt(String jwt) {
+    @Value("${jwt.key}")
+    private String SECRET_KEY;
+    @Value("${jwt.token.maxsize}")
+    private int MAX_TOKEN_LENGTH;
+    public Claims decodeJwt(String jwt) {
         Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
 
         Claims claims = Jwts.parserBuilder()
@@ -28,7 +32,8 @@ public class JWT {
         return claims;
     }
 
-    public static String generateJwt(String userUUID, Role role) {
+    public String generateJwt(String userUUID, Role role) {
+
         Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
 
         long nowMillis = System.currentTimeMillis();
@@ -47,6 +52,35 @@ public class JWT {
                 .compact();
 
         return jwt;
+    }
+
+    public boolean checkRolesAndValidateToken(String JWToken, Role[] allowedRoles){
+
+        if (JWToken == null || JWToken.length() > MAX_TOKEN_LENGTH) {
+            return false;
+        }
+
+        if (StringUtils.startsWithIgnoreCase(JWToken, "Bearer ")) JWToken = JWToken.substring(7);
+        else return false;
+
+        try{
+            Claims claims = decodeJwt(JWToken);
+            String roleString = (String) claims.get("role");
+            Role role = Role.valueOf(roleString);
+
+            for(int i = 0 ; i < allowedRoles.length; i ++){
+                if (role == allowedRoles[i]) return true;
+            }
+            return false;
+        }
+        catch (io.jsonwebtoken.security.SignatureException |
+               io.jsonwebtoken.ExpiredJwtException |
+               io.jsonwebtoken.MalformedJwtException |
+               io.jsonwebtoken.UnsupportedJwtException |
+               IllegalArgumentException e) {
+            return false;
+        }
+
     }
 
 }
