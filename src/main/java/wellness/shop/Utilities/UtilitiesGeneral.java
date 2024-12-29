@@ -1,5 +1,6 @@
 package wellness.shop.Utilities;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
@@ -51,6 +52,7 @@ public class UtilitiesGeneral {
         }
         return Pattern.matches(EMAIL_REGEX, email);
     }
+
 
     public static LocalDateTime formatDateTime(String dateTime){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

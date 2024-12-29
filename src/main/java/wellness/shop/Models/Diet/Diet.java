@@ -8,8 +8,8 @@ public class Diet {
 
     private int id;
     private String description;
-    private String userName;
-    private String issuedBy;
+    private String userUUID;
+    private String employeeUUID;
     private int age;
     private double height;
     private double weight;
@@ -26,12 +26,12 @@ public class Diet {
         return description;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserUUID() {
+        return userUUID;
     }
 
-    public String getIssuedBy() {
-        return issuedBy;
+    public String getEmployeeUUID() {
+        return employeeUUID;
     }
 
     public int getAge() {
@@ -58,12 +58,12 @@ public class Diet {
         this.description = description;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserUUID(String userUUID) {
+        this.userUUID = userUUID;
     }
 
-    public void setIssuedBy(String issuedBy) {
-        this.issuedBy = issuedBy;
+    public void setEmployeeUUID(String employeeUUID) {
+        this.employeeUUID = employeeUUID;
     }
 
     public void setAge(int age) {

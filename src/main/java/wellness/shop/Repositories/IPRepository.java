@@ -38,7 +38,7 @@ public class IPRepository {
             preparedStatement.executeUpdate();
 
         }catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
         }
     }
 
@@ -58,7 +58,7 @@ public class IPRepository {
 
         }catch (SQLException e) {
 
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return new ArrayList<>();
         }
 

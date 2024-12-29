@@ -48,7 +48,7 @@ public class FoodRepository {
 
         }catch (SQLException e) {
 
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
 
             if (e.getErrorCode() == 1062) return isCreated;
 
@@ -88,7 +88,7 @@ public class FoodRepository {
 
         } catch (SQLException e) {
 
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
 
             return isUpdated;
         }
@@ -124,7 +124,7 @@ public class FoodRepository {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return foodItem;
         }
 
@@ -148,7 +148,7 @@ public class FoodRepository {
             isDeleted = rowsDeleted > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return isDeleted;
         }
         return isDeleted;

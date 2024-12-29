@@ -49,9 +49,7 @@ public class ProductRepository {
             isCreated = rowsCreated > 0;
 
         } catch (SQLException e) {
-
-            System.out.println(e.getMessage());
-
+            System.out.println("SQL Error: " + e.getMessage());
             return isCreated;
         }
 
@@ -81,7 +79,7 @@ public class ProductRepository {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return product;
         }
 
@@ -115,7 +113,7 @@ public class ProductRepository {
             isUpdated = rowsUpdated > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return false;
         }
 
@@ -137,7 +135,7 @@ public class ProductRepository {
             isDeleted = rowsDeleted > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return isDeleted;
         }
         return isDeleted;
@@ -158,7 +156,7 @@ public class ProductRepository {
             isDeleted = rowsDeleted > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return isDeleted;
         }
         return isDeleted;
@@ -182,7 +180,7 @@ public class ProductRepository {
             }
 
         } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
         }
 
         return productId;
@@ -218,7 +216,7 @@ public class ProductRepository {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return new ArrayList<>();
         }
 
@@ -255,7 +253,7 @@ public class ProductRepository {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return new ArrayList<>();
         }
 
@@ -281,7 +279,7 @@ public class ProductRepository {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return null;
         }
 

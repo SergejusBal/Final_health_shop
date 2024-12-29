@@ -46,7 +46,7 @@ public class UserRepository{
 
         }catch (SQLException e) {
 
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
 
             if (e.getErrorCode() == 1062) return "User already exists";
 
@@ -73,7 +73,7 @@ public class UserRepository{
 
             return rowsUpdated > 0;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return false;
         }
     }
@@ -97,7 +97,7 @@ public class UserRepository{
             user = createUser(resultSet);
 
         }catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return null;
         }
 
@@ -120,7 +120,7 @@ public class UserRepository{
             if (resultSet.next()) return resultSet.getString("uuid");
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return null;
         }
 
@@ -149,7 +149,7 @@ public class UserRepository{
             user = createUser(resultSet);
 
         }catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return null;
         }
 
@@ -176,7 +176,7 @@ public class UserRepository{
             status = resultSet.getBoolean("status");
 
         }catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return status;
         }
 
@@ -202,7 +202,7 @@ public class UserRepository{
             isModified = rowsAffected > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return isModified;
         }
 
@@ -227,7 +227,7 @@ public class UserRepository{
             isCreated = rowsCreated > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return isCreated;
         }
 
@@ -249,7 +249,7 @@ public class UserRepository{
             return rowsDeleted > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return false;
         }
 
@@ -277,7 +277,7 @@ public class UserRepository{
 
 
         }catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return privileges;
         }
 
@@ -300,7 +300,7 @@ public class UserRepository{
             if(resultSet.next()) return true;
 
         }catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return false;
         }
 
@@ -324,7 +324,7 @@ public class UserRepository{
             isCreated = rowsInserted > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return isCreated;
         }
 
@@ -348,7 +348,7 @@ public class UserRepository{
             isDeleted = rowsDeleted > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return isDeleted;
         }
 
@@ -369,7 +369,7 @@ public class UserRepository{
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
         }
 
     }
@@ -394,7 +394,7 @@ public class UserRepository{
 
 
         }catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return specialization;
         }
 
@@ -418,7 +418,7 @@ public class UserRepository{
             isCreated = rowsInserted > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return isCreated;
         }
 
@@ -442,7 +442,7 @@ public class UserRepository{
             isDeleted = rowsDeleted > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return isDeleted;
         }
 
@@ -463,7 +463,7 @@ public class UserRepository{
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
         }
 
     }
@@ -488,7 +488,7 @@ public class UserRepository{
             isDeleted = rowsDeleted > 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return isDeleted;
         }
 
