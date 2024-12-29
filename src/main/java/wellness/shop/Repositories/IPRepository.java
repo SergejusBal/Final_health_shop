@@ -1,6 +1,7 @@
 package wellness.shop.Repositories;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -19,7 +20,7 @@ public class IPRepository {
     @Value("${spring.datasource.password}")
     private String password;
 
-
+    @Async
     public void registerBannedIP(String ip){
 
         if(ip == null){
