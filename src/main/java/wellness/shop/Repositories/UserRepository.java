@@ -33,9 +33,9 @@ public class UserRepository{
 
         String sql = "INSERT INTO users (uuid,username,password,role)\n" +
                 "VALUES (?,?,?,?);";
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, UtilitiesGeneral.generateUID().toString());
             preparedStatement.setString(2, user.getUsername());
             preparedStatement.setString(3, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
@@ -43,8 +43,6 @@ public class UserRepository{
 
             preparedStatement.executeUpdate();
 
-            preparedStatement.close();
-            connection.close();
 
         }catch (SQLException e) {
 
@@ -65,17 +63,13 @@ public class UserRepository{
 
         String sql = "UPDATE users SET role = ? WHERE uuid = ?;";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setString(1, role.name());
             preparedStatement.setString(2, uuid);
 
             int rowsUpdated = preparedStatement.executeUpdate();
-
-            preparedStatement.close();
-            connection.close();
 
             return rowsUpdated > 0;
         } catch (SQLException e) {
@@ -92,9 +86,9 @@ public class UserRepository{
 
         String sql = "SELECT * FROM users WHERE username = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1,userName);
             ResultSet resultSet =  preparedStatement.executeQuery();
 
@@ -117,9 +111,9 @@ public class UserRepository{
 
         String sql = "SELECT uuid FROM users WHERE username = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -144,9 +138,9 @@ public class UserRepository{
 
         String sql = "SELECT * FROM users WHERE uuid = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1,uuid);
             ResultSet resultSet =  preparedStatement.executeQuery();
 
@@ -171,9 +165,9 @@ public class UserRepository{
 
         String sql = "SELECT * FROM subscription WHERE uuid = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1,uuid);
             ResultSet resultSet =  preparedStatement.executeQuery();
 
@@ -198,9 +192,9 @@ public class UserRepository{
 
         String sql = "UPDATE subscription SET status = ? WHERE uuid = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setBoolean(1, newStatus);
             preparedStatement.setString(2, uuid);
 
@@ -216,15 +210,16 @@ public class UserRepository{
     }
 
     public boolean createSubscription(String uuid) {
+
         boolean isCreated = false;
 
         if (uuid == null) return isCreated;
 
         String sql = "INSERT INTO subscription (uuid, status) VALUES (?, ?)";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, uuid);
             preparedStatement.setBoolean(2, true);
 
@@ -241,15 +236,13 @@ public class UserRepository{
 
     public boolean deleteSubscription(String uuid) {
 
-
-
         if (uuid == null) return false;
 
         String sql = "DELETE FROM subscription WHERE uuid = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, uuid);
 
             int rowsDeleted = preparedStatement.executeUpdate();
@@ -272,9 +265,9 @@ public class UserRepository{
 
         String sql = "SELECT * FROM admin_info WHERE uuid = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1,uuid);
             ResultSet resultSet =  preparedStatement.executeQuery();
 
@@ -297,9 +290,9 @@ public class UserRepository{
 
         String sql = "SELECT 1 FROM admin_info WHERE uuid = ? AND privilege = ? LIMIT 1";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1,uuid);
             preparedStatement.setString(2,privilege.name());
             ResultSet resultSet =  preparedStatement.executeQuery();
@@ -321,9 +314,9 @@ public class UserRepository{
 
         String sql = "INSERT INTO admin_info (uuid, privilege) VALUES (?, ?)";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, uuid);
             preparedStatement.setString(2, privilege.name());
 
@@ -345,9 +338,9 @@ public class UserRepository{
 
         String sql = "DELETE FROM admin_info WHERE uuid = ? AND privilege = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, uuid);
             preparedStatement.setString(2, privilege.name());
 
@@ -368,9 +361,9 @@ public class UserRepository{
 
         String sql = "DELETE FROM admin_info WHERE uuid = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, uuid);
 
             preparedStatement.executeUpdate();
@@ -389,9 +382,9 @@ public class UserRepository{
 
         String sql = "SELECT * FROM employee_info WHERE uuid = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1,uuid);
             ResultSet resultSet =  preparedStatement.executeQuery();
 
@@ -415,9 +408,9 @@ public class UserRepository{
 
         String sql = "INSERT INTO employee_info (uuid, specialization) VALUES (?, ?)";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, uuid);
             preparedStatement.setString(2, specialization.name());
 
@@ -439,9 +432,9 @@ public class UserRepository{
 
         String sql = "DELETE FROM employee_info WHERE uuid = ? AND specialization = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, uuid);
             preparedStatement.setString(2, specialization.name());
 
@@ -462,9 +455,9 @@ public class UserRepository{
 
         String sql = "DELETE FROM employee_info WHERE uuid = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, uuid);
 
             preparedStatement.executeUpdate();
@@ -486,9 +479,9 @@ public class UserRepository{
 
         String sql = "DELETE FROM users WHERE uuid = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, uuid);
 
             int rowsDeleted = preparedStatement.executeUpdate();

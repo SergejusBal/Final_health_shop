@@ -30,15 +30,12 @@ public class IPRepository {
 
         String sql = "INSERT INTO banned_ips (ip)\n" +
                 "VALUES (?);";
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1,ip);
 
             preparedStatement.executeUpdate();
-
-            preparedStatement.close();
-            connection.close();
 
         }catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -50,9 +47,8 @@ public class IPRepository {
         List<String> bannedIPList = new ArrayList<>();
         String sql = "SELECT * FROM banned_ips";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             ResultSet resultSet =  preparedStatement.executeQuery();
 
