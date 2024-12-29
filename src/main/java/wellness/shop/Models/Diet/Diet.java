@@ -85,11 +85,11 @@ public class Diet {
 //    {
 //        "id": 1,
 //            "description": "Balanced diet plan for weight loss",
-//            "userName": "John Doe",
+//            "userUUID": "John Doe",
 //            "age": 30.0,
 //            "height": 175.5,
 //            "weight": 70.0,
-//            "issuedBy": "Nutritionist Jane Doe",
+//            "employeeUUID": "Nutritionist Jane Doe",
 //            "mealPlans": [
 //        {
 //            "day": 1,
