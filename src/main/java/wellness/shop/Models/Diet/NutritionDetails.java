@@ -1,23 +1,14 @@
-package wellness.shop.Models;
+package wellness.shop.Models.Diet;
 
-public class FoodItem {
-    private int id;
-    private String food;
+public class NutritionDetails {
+
     private Double calories;
     private Double proteins;
     private Double fats;
     private Double carbohydrates;
-    private Double fibers;
+    private Double fiber;
 
-    public FoodItem() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getFood() {
-        return food;
+    public NutritionDetails() {
     }
 
     public Double getCalories() {
@@ -36,16 +27,8 @@ public class FoodItem {
         return carbohydrates;
     }
 
-    public Double getFibers() {
-        return fibers;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setFood(String food) {
-        this.food = food;
+    public Double getFiber() {
+        return fiber;
     }
 
     public void setCalories(Double calories) {
@@ -64,7 +47,7 @@ public class FoodItem {
         this.carbohydrates = carbohydrates;
     }
 
-    public void setFibers(Double fibers) {
-        this.fibers = fibers;
+    public void setFiber(Double fiber) {
+        this.fiber = fiber;
     }
 }

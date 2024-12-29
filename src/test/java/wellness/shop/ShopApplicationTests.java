@@ -10,4 +10,5 @@ class ShopApplicationTests {
 	void contextLoads() {
 	}
 
+
 }

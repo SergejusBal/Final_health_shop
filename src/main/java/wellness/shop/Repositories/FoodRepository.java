@@ -1,13 +1,10 @@
 package wellness.shop.Repositories;
 
-import org.mindrot.jbcrypt.BCrypt;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import wellness.shop.Models.FoodItem;
-import wellness.shop.Models.Users.Enums.Role;
-import wellness.shop.Models.Users.Enums.Specialization;
-import wellness.shop.Models.Users.Guest;
-import wellness.shop.Utilities.UtilitiesGeneral;
+
 
 import java.sql.*;
 
@@ -28,11 +25,13 @@ public class FoodRepository {
 
         boolean isCreated = false;
 
-        if(     foodItem.getFood() == null || foodItem.getCalories() == null ||
-                foodItem.getFats() == null || foodItem.getProteins() == null ||
+        if(     foodItem.getFood() == null ||
+                foodItem.getCalories() == null ||
+                foodItem.getFats() == null ||
+                foodItem.getProteins() == null ||
                 foodItem.getCarbohydrates() == null) return isCreated;
 
-        String sql = "INSERT INTO food_table (food, calories, proteins, fats, carbohydrates) VALUES (?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO food_table (food, calories, proteins, fats, carbohydrates, fibers) VALUES (?, ?, ?, ?, ?, ?);";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -42,6 +41,7 @@ public class FoodRepository {
             preparedStatement.setDouble(3, foodItem.getProteins());
             preparedStatement.setDouble(4, foodItem.getFats());
             preparedStatement.setDouble(5, foodItem.getCarbohydrates());
+            preparedStatement.setDouble(6, foodItem.getFibers());
 
             int rowsCreated = preparedStatement.executeUpdate();
             isCreated = rowsCreated > 0;
@@ -71,7 +71,7 @@ public class FoodRepository {
             return isUpdated;
         }
 
-        String sql = "UPDATE food_table SET calories = ?, proteins = ?, fats = ?, carbohydrates = ? WHERE food = ?;";
+        String sql = "UPDATE food_table SET calories = ?, proteins = ?, fats = ?, carbohydrates = ?, fibers = ? WHERE food = ?;";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -80,7 +80,8 @@ public class FoodRepository {
             preparedStatement.setDouble(2, foodItem.getProteins());
             preparedStatement.setDouble(3, foodItem.getFats());
             preparedStatement.setDouble(4, foodItem.getCarbohydrates());
-            preparedStatement.setString(5, foodItem.getFood());
+            preparedStatement.setDouble(5, foodItem.getFibers());
+            preparedStatement.setString(6, foodItem.getFood());
 
             int rowsUpdated = preparedStatement.executeUpdate();
             isUpdated = rowsUpdated > 0;
@@ -119,6 +120,7 @@ public class FoodRepository {
                 foodItem.setProteins(resultSet.getDouble("proteins"));
                 foodItem.setFats(resultSet.getDouble("fats"));
                 foodItem.setCarbohydrates(resultSet.getDouble("carbohydrates"));
+                foodItem.setFibers(resultSet.getDouble("fibers"));
             }
 
         } catch (SQLException e) {
