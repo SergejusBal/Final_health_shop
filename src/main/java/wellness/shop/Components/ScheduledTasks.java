@@ -46,6 +46,11 @@ public class ScheduledTasks {
 
     }
 
+    /**
+     * This method calculates how many HTTP request each IP had. This is done using RabbitMQ.
+     * A custom interface is written to have a call back to rabbit, but ipMap is in scope of method.
+     *
+     */
     private synchronized HashMap<String, Integer> getIPMap(){
 
         HashMap<String,Integer> ipMap = new HashMap<>();
@@ -64,6 +69,10 @@ public class ScheduledTasks {
         return ipMap;
     }
 
+    /**
+     * Check if IP exceeded the limit of calls with "requestBanLimit"
+     *
+     */
     private List<String> getBanList(HashMap<String, Integer> ipMap){
 
         if(ipMap == null || ipMap.isEmpty()) return Collections.emptyList();
@@ -74,6 +83,11 @@ public class ScheduledTasks {
         }
         return bannedIpsList;
     }
+
+    /**
+     * Set banned ips in Redis and in repository.
+     *
+     */
 
     private void banIps(List<String> bannedIpsList ){
         if (bannedIpsList == null || bannedIpsList.isEmpty()) return;

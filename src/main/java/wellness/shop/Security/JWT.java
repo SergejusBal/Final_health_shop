@@ -20,6 +20,16 @@ public class JWT {
     private String SECRET_KEY;
     @Value("${jwt.token.maxsize}")
     private int MAX_TOKEN_LENGTH;
+
+    @Value("${jwt.token.expiration}")
+    private long TOKEN_EXPIRATION;
+
+
+
+
+    /**
+     * Decodes JWToken to claims;
+     */
     public Claims decodeJwt(String jwt) {
         Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
 
@@ -32,13 +42,16 @@ public class JWT {
         return claims;
     }
 
+    /**
+     * Returns a JWToken;
+     */
     public String generateJwt(String userUUID, Role role) {
 
         Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
 
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
-        Date exp = new Date(nowMillis + 120 * 60 * 1000);
+        Date exp = new Date(nowMillis + TOKEN_EXPIRATION * 60 * 1000);
 
         String jwt = Jwts.builder()
                 .setIssuer("wellnessShop.lt")
@@ -53,6 +66,15 @@ public class JWT {
 
         return jwt;
     }
+
+
+    /**
+     * This method validates token based on roles given. <br>
+     * Token requires bearer at the start,
+     * if token is too long it returns false,
+     * invalid tokens return false,
+     * expired token is considered false,
+     */
 
     public boolean checkRolesAndValidateToken(String JWToken, Role[] allowedRoles){
 
@@ -82,5 +104,54 @@ public class JWT {
         }
 
     }
+
+    /**
+     * Returns user role;
+     */
+    public Role getRole(String JWToken){
+
+        if (StringUtils.startsWithIgnoreCase(JWToken, "Bearer ")) JWToken = JWToken.substring(7);
+        else return null;
+
+        Role role;
+        try {
+            Claims claims = decodeJwt(JWToken);
+            String roleString = claims.get("role", String.class);
+            role = Role.valueOf(roleString);
+        }
+        catch (io.jsonwebtoken.security.SignatureException |
+                io.jsonwebtoken.ExpiredJwtException |
+                io.jsonwebtoken.MalformedJwtException |
+                io.jsonwebtoken.UnsupportedJwtException |
+                IllegalArgumentException e) {
+            return null;
+        }
+        return role;
+    }
+
+    /**
+     * Returns user UUID;
+     */
+    public String getUUID(String JWToken){
+
+        if (StringUtils.startsWithIgnoreCase(JWToken, "Bearer ")) JWToken = JWToken.substring(7);
+        else return null;
+
+        String userUUID;
+        try {
+            Claims claims = decodeJwt(JWToken);
+            userUUID = claims.get("userUUID", String.class);
+        }
+        catch (io.jsonwebtoken.security.SignatureException |
+               io.jsonwebtoken.ExpiredJwtException |
+               io.jsonwebtoken.MalformedJwtException |
+               io.jsonwebtoken.UnsupportedJwtException |
+               IllegalArgumentException e) {
+            return null;
+        }
+        return userUUID;
+    }
+
+
 
 }

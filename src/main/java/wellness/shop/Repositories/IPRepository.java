@@ -1,6 +1,7 @@
 package wellness.shop.Repositories;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -19,7 +20,7 @@ public class IPRepository {
     @Value("${spring.datasource.password}")
     private String password;
 
-
+    @Async
     public void registerBannedIP(String ip){
 
         if(ip == null){
@@ -29,18 +30,15 @@ public class IPRepository {
 
         String sql = "INSERT INTO banned_ips (ip)\n" +
                 "VALUES (?);";
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1,ip);
 
             preparedStatement.executeUpdate();
 
-            preparedStatement.close();
-            connection.close();
-
         }catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
         }
     }
 
@@ -49,9 +47,8 @@ public class IPRepository {
         List<String> bannedIPList = new ArrayList<>();
         String sql = "SELECT * FROM banned_ips";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             ResultSet resultSet =  preparedStatement.executeQuery();
 
@@ -61,7 +58,7 @@ public class IPRepository {
 
         }catch (SQLException e) {
 
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
             return new ArrayList<>();
         }
 
