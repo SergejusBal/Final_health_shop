@@ -5,10 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wellness.shop.Models.Diet.Diet;
+import wellness.shop.Models.FoodItem;
+import wellness.shop.Models.Product;
 import wellness.shop.Models.Users.Enums.Role;
 import wellness.shop.Models.Users.Enums.Specialization;
 import wellness.shop.Models.Users.Guest;
 import wellness.shop.Repositories.DietPlanRepository;
+import wellness.shop.Repositories.FoodRepository;
+import wellness.shop.Repositories.ProductRepository;
 import wellness.shop.Security.JWT;
 import wellness.shop.Utilities.UtilitiesGeneral;
 
@@ -41,12 +45,12 @@ public class NoFilterController {
     }
 
     @Autowired
-    DietPlanRepository dietPlanRepository;
+    ProductRepository productRepository;
 
     @PostMapping("/test")
-    public ResponseEntity<Boolean> createSpecialization(@RequestBody Diet diet) {
+    public ResponseEntity<List<Product>> createSpecialization(@RequestBody Product product) {
 
-        return new ResponseEntity<>(dietPlanRepository.deleteDietById(2), HttpStatus.OK);
+        return new ResponseEntity<>(productRepository.getProductsByCategory("Computers",10,0), HttpStatus.OK);
 
     }
 

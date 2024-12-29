@@ -32,7 +32,10 @@ public class StartUpTasks {
         this.redis = new Redis(redisHost,redisPort);
 
     }
-
+    /**
+     * After startup all ips in mysql database are added to redis cache.
+     *
+     */
     private void cacheBannedList(){
         List<String> bannedIPList = ipRepository.getBannedIPList();
         for(String ip : bannedIPList){
