@@ -20,6 +20,7 @@ public class UtilitiesGeneral {
             Map.entry("No authorization", HttpStatus.UNAUTHORIZED),
             Map.entry("Database connection failed", HttpStatus.INTERNAL_SERVER_ERROR),
             Map.entry("Invalid data", HttpStatus.BAD_REQUEST),
+
             Map.entry("User already exists", HttpStatus.CONFLICT),
             Map.entry("User authorize", HttpStatus.OK),
             Map.entry("User not found", HttpStatus.NOT_FOUND),
@@ -37,6 +38,13 @@ public class UtilitiesGeneral {
             Map.entry("User subscription was added", HttpStatus.OK),
             Map.entry("User privilege was added", HttpStatus.OK),
             Map.entry("User specialization was added", HttpStatus.OK),
+
+            Map.entry("Fail to add product", HttpStatus.CONFLICT),
+            Map.entry("Product not found", HttpStatus.NOT_FOUND),
+            Map.entry("Product was added", HttpStatus.OK),
+            Map.entry("Product was deleted", HttpStatus.OK),
+            Map.entry("Product was modified", HttpStatus.OK),
+
             Map.entry("Email already exists", HttpStatus.CONFLICT),
             Map.entry("Email was successfully added", HttpStatus.OK)
     );

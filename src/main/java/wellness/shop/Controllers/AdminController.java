@@ -23,86 +23,78 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    @DeleteMapping("/delete/user")
-    public ResponseEntity<String> deleteUser(@RequestParam String username, @RequestHeader("Authorization") String authorizationHeader) {
+    @DeleteMapping("/delete/user/{username}")
+    public ResponseEntity<String> deleteUser(@PathVariable String username, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = userService.deleteUser(username, authorizationHeader);
 
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
-
     }
 
-    @PutMapping("/modify/role")
-    public ResponseEntity<String> changeUserRole(@RequestParam String username, @RequestParam Role role, @RequestHeader("Authorization") String authorizationHeader) {
+    @PutMapping("/modify/role/{username}/{role}")
+    public ResponseEntity<String> changeUserRole(@PathVariable String username, @PathVariable Role role, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = userService.changeUserRole(username, role, authorizationHeader);
 
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
-
     }
 
-    @PutMapping("/add/privileges")
-    public ResponseEntity<String> createPrivilege(@RequestParam String username, @RequestParam Privileges privileges, @RequestHeader("Authorization") String authorizationHeader) {
+    @PutMapping("/add/privileges/{username}/{privileges}")
+    public ResponseEntity<String> createPrivilege(@PathVariable String username, @PathVariable Privileges privileges, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = userService.createPrivilege(username, privileges, authorizationHeader);
 
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
-
     }
 
-    @DeleteMapping("/delete/privileges")
-    public ResponseEntity<String> deletePrivilege(@RequestParam String username, @RequestParam Privileges privileges, @RequestHeader("Authorization") String authorizationHeader) {
+    @DeleteMapping("/delete/privileges/{username}/{privileges}")
+    public ResponseEntity<String> deletePrivilege(@PathVariable String username, @PathVariable Privileges privileges, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = userService.deletePrivilege(username, privileges, authorizationHeader);
 
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
-
     }
 
-    @PutMapping("/add/specialization")
-    public ResponseEntity<String> createSpecialization(@RequestParam String username, @RequestParam Specialization specialization, @RequestHeader("Authorization") String authorizationHeader) {
+    @PutMapping("/add/specialization/{username}/{specialization}")
+    public ResponseEntity<String> createSpecialization(@PathVariable String username, @PathVariable Specialization specialization, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = userService.createSpecialization(username, specialization, authorizationHeader);
 
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
-
     }
 
-    @DeleteMapping("/delete/specialization")
-    public ResponseEntity<String> deleteSpecialization(@RequestParam String username, @RequestParam Specialization specialization, @RequestHeader("Authorization") String authorizationHeader) {
+    @DeleteMapping("/delete/specialization/{username}/{specialization}")
+    public ResponseEntity<String> deleteSpecialization(@PathVariable String username, @PathVariable Specialization specialization, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = userService.deleteSpecialization(username, specialization, authorizationHeader);
 
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
-
     }
 
-    @PutMapping("/add/subscription")
-    public ResponseEntity<String> createSubscription(@RequestParam String username, @RequestHeader("Authorization") String authorizationHeader) {
+    @PutMapping("/add/subscription/{username}")
+    public ResponseEntity<String> createSubscription(@PathVariable String username, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = userService.createSubscription(username, authorizationHeader);
 
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
-
     }
 
-    @PutMapping("/modify/subscription")
-    public ResponseEntity<String> modifySubscription(@RequestParam String username, @RequestParam Boolean status, @RequestHeader("Authorization") String authorizationHeader) {
+    @PutMapping("/modify/subscription/{username}/{status}")
+    public ResponseEntity<String> modifySubscription(@PathVariable String username, @PathVariable Boolean status, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = userService.modifySubscription(username, status, authorizationHeader);
 
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
-
     }
 
-    @DeleteMapping("/delete/subscription")
-    public ResponseEntity<String> deleteSubscription(@RequestParam String username,  @RequestHeader("Authorization") String authorizationHeader) {
+    @DeleteMapping("/delete/subscription/{username}")
+    public ResponseEntity<String> deleteSubscription(@PathVariable String username, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = userService.deleteSubscription(username, authorizationHeader);
 
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
-
     }
+
 
 
 }

@@ -43,6 +43,9 @@ public class FilterConfig {
     @Autowired
     JWT jwt;
     Role[] allowedAdminRoles = {Role.ADMIN};
+    Role[] allowedEmployeeRoles = {Role.ADMIN,Role.EMPLOYEE};
+    Role[] allowedUserRoles = {Role.ADMIN,Role.EMPLOYEE,Role.REGULAR};
+    Role[] allowedGuestRoles = {Role.ADMIN,Role.EMPLOYEE,Role.REGULAR,Role.GUEST};
     @Bean
     public FilterRegistrationBean<RoleFilter> addAdminFilter() {
         FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
@@ -52,7 +55,7 @@ public class FilterConfig {
         return registrationBean;
     }
 
-    Role[] allowedEmployeeRoles = {Role.ADMIN,Role.EMPLOYEE};
+
     @Bean
     public FilterRegistrationBean<RoleFilter> addEmployeeFilter() {
         FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
@@ -61,7 +64,7 @@ public class FilterConfig {
         registrationBean.setOrder(3);
         return registrationBean;
     }
-    Role[] allowedUserRoles = {Role.ADMIN,Role.EMPLOYEE,Role.REGULAR};
+
     @Bean
     public FilterRegistrationBean<RoleFilter> addRegularUserFilter() {
         FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
@@ -71,12 +74,30 @@ public class FilterConfig {
         return registrationBean;
     }
 
-    Role[] allowedGuestRoles = {Role.ADMIN,Role.EMPLOYEE,Role.REGULAR,Role.GUEST};
+
     @Bean
     public FilterRegistrationBean<RoleFilter> addGuestFilter() {
         FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new RoleFilter(jwt,allowedGuestRoles));
         registrationBean.addUrlPatterns("/guest/*");
+        registrationBean.setOrder(3);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<RoleFilter> addPublicProductControllerFilter() {
+        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new RoleFilter(jwt,allowedGuestRoles));
+        registrationBean.addUrlPatterns("/product/public/*");
+        registrationBean.setOrder(3);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<RoleFilter> addSecuredProductControllerFilter() {
+        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new RoleFilter(jwt,allowedAdminRoles));
+        registrationBean.addUrlPatterns("/product/secured/*");
         registrationBean.setOrder(3);
         return registrationBean;
     }
