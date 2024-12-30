@@ -4,17 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wellness.shop.Models.Diet.Diet;
-import wellness.shop.Models.FoodItem;
 import wellness.shop.Models.Product;
 import wellness.shop.Models.Users.Enums.Role;
-import wellness.shop.Models.Users.Enums.Specialization;
-import wellness.shop.Models.Users.Guest;
-import wellness.shop.Repositories.DietPlanRepository;
-import wellness.shop.Repositories.FoodRepository;
 import wellness.shop.Repositories.ProductRepository;
 import wellness.shop.Security.JWT;
-import wellness.shop.Utilities.UtilitiesGeneral;
 
 import java.util.List;
 

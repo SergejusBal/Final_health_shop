@@ -39,11 +39,17 @@ public class UtilitiesGeneral {
             Map.entry("User privilege was added", HttpStatus.OK),
             Map.entry("User specialization was added", HttpStatus.OK),
 
-            Map.entry("Fail to add product", HttpStatus.CONFLICT),
+            Map.entry("Fail to add product", HttpStatus.BAD_REQUEST),
             Map.entry("Product not found", HttpStatus.NOT_FOUND),
             Map.entry("Product was added", HttpStatus.OK),
             Map.entry("Product was deleted", HttpStatus.OK),
             Map.entry("Product was modified", HttpStatus.OK),
+
+            Map.entry("Fail to add diet", HttpStatus.BAD_REQUEST),
+            Map.entry("Diet not found", HttpStatus.NOT_FOUND),
+            Map.entry("Diet was successfully added", HttpStatus.OK),
+            Map.entry("Diet was modified", HttpStatus.OK),
+            Map.entry("Diet was successfully deleted", HttpStatus.OK),
 
             Map.entry("Email already exists", HttpStatus.CONFLICT),
             Map.entry("Email was successfully added", HttpStatus.OK)

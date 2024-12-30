@@ -13,11 +13,10 @@ import wellness.shop.Models.Diet.MealPlan;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Repository
-public class DietPlanRepository {
+public class DietRepository {
 
 
     @Value("${spring.datasource.url}")
@@ -32,7 +31,7 @@ public class DietPlanRepository {
     ObjectMapper objectMapper;
 
 
-    public DietPlanRepository(){
+    public DietRepository(){
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.registerModule(new JavaTimeModule());
@@ -43,8 +42,8 @@ public class DietPlanRepository {
         boolean isCreated = false;
 
         if (    diet == null ||
-                diet.getUserUUID() == null ||
-                diet.getEmployeeUUID() == null ||
+                diet.getUser() == null ||
+                diet.getEmployee() == null ||
                 diet.getDescription() == null ||
                 diet.getAge() == 0 ||
                 diet.getHeight() == 0 ||
@@ -53,14 +52,14 @@ public class DietPlanRepository {
             return isCreated;
         }
 
-        String sql = "INSERT INTO diet_plan (user_uuid, employee_uuid, description, age, height, weight, meal_plan) " +
+        String sql = "INSERT INTO diet_plan (user, employee, description, age, height, weight, meal_plan) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString(1, diet.getUserUUID());
-            preparedStatement.setString(2, diet.getEmployeeUUID());
+            preparedStatement.setString(1, diet.getUser());
+            preparedStatement.setString(2, diet.getEmployee());
             preparedStatement.setString(3, diet.getDescription());
             preparedStatement.setInt(4, diet.getAge());
             preparedStatement.setDouble(5, diet.getHeight());
@@ -86,8 +85,8 @@ public class DietPlanRepository {
 
         if (    id == 0 ||
                 diet == null ||
-                diet.getUserUUID() == null ||
-                diet.getEmployeeUUID() == null ||
+                diet.getUser() == null ||
+                diet.getEmployee() == null ||
                 diet.getDescription() == null ||
                 diet.getAge() == 0 ||
                 diet.getHeight() == 0 ||
@@ -96,13 +95,13 @@ public class DietPlanRepository {
             return isUpdated;
         }
 
-        String sql = "UPDATE diet_plan SET user_uuid = ?, employee_uuid = ?, description = ?, age = ?, height = ?, weight = ?, meal_plan = ? WHERE id = ?;";
+        String sql = "UPDATE diet_plan SET user = ?, employee = ?, description = ?, age = ?, height = ?, weight = ?, meal_plan = ? WHERE id = ?;";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString(1, diet.getUserUUID());
-            preparedStatement.setString(2, diet.getEmployeeUUID());
+            preparedStatement.setString(1, diet.getUser());
+            preparedStatement.setString(2, diet.getEmployee());
             preparedStatement.setString(3, diet.getDescription());
             preparedStatement.setInt(4, diet.getAge());
             preparedStatement.setDouble(5, diet.getHeight());
@@ -124,28 +123,163 @@ public class DietPlanRepository {
         return isUpdated;
     }
 
-    public List<Diet> getDietsByUserUUID(String userUUID) {
 
-        List<Diet> diets = new ArrayList<>();
+    public String getEmployeeByDietID(int dietID) {
+        String employeeUUID = null;
 
-        if (userUUID == null || userUUID.isEmpty()) {
-            return diets;
+        if (dietID == 0) {
+            return employeeUUID;
         }
 
-        String sql = "SELECT * FROM diet_plan WHERE user_uuid = ?;";
+        String sql = "SELECT employee FROM diet_plan WHERE id = ?;";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, dietID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                employeeUUID = resultSet.getString("employee");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return employeeUUID;
+        }
+
+        return employeeUUID;
+    }
+
+    public String getUserByDietID(int dietID) {
+        String userUUID = null;
+
+        if (dietID == 0) {
+            return userUUID;
+        }
+
+        String sql = "SELECT user FROM diet_plan WHERE id = ?;";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, dietID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                userUUID = resultSet.getString("user");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return userUUID;
+        }
+
+        return userUUID;
+    }
+
+    public Diet getDietById(int id) {
+
+        Diet diet = null;
+
+        if (id == 0) {
+            return diet;
+        }
+
+        String sql = "SELECT * FROM diet_plan WHERE id = ?;";
 
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString(1, userUUID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+
+                diet = new Diet();
+                diet.setId(resultSet.getInt("id"));
+                diet.setUser(resultSet.getString("user"));
+                diet.setEmployee(resultSet.getString("employee"));
+                diet.setDescription(resultSet.getString("description"));
+                diet.setAge(resultSet.getInt("age"));
+                diet.setHeight(resultSet.getDouble("height"));
+                diet.setWeight(resultSet.getDouble("weight"));
+
+                String mealPlanJson = resultSet.getString("meal_plan");
+                List<MealPlan> mealPlans = generateObjectFromJSon(mealPlanJson, new TypeReference<List<MealPlan>>() {});
+                diet.setMealPlans(mealPlans);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return diet;
+        }
+
+        return diet;
+    }
+
+    public List<Diet> getDietsByEmployee(String employee) {
+
+        List<Diet> diets = new ArrayList<>();
+
+        if (employee == null || employee.isEmpty()) {
+            return diets;
+        }
+
+        String sql = "SELECT * FROM diet_plan WHERE employee = ?;";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, employee);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Diet diet = new Diet();
                 diet.setId(resultSet.getInt("id"));
-                diet.setUserUUID(resultSet.getString("user_uuid"));
-                diet.setEmployeeUUID(resultSet.getString("employee_uuid"));
+                diet.setUser(resultSet.getString("user"));
+                diet.setEmployee(resultSet.getString("employee"));
+                diet.setDescription(resultSet.getString("description"));
+                diet.setAge(resultSet.getInt("age"));
+                diet.setHeight(resultSet.getDouble("height"));
+                diet.setWeight(resultSet.getDouble("weight"));
+
+                String mealPlanJson = resultSet.getString("meal_plan");
+                List<MealPlan> mealPlans = generateObjectFromJSon(mealPlanJson, new TypeReference<List<MealPlan>>() {});
+                diet.setMealPlans(mealPlans);
+
+                diets.add(diet);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+
+        return diets;
+    }
+    public List<Diet> getDietsByUser(String user) {
+
+        List<Diet> diets = new ArrayList<>();
+
+        if (user == null || user.isEmpty()) {
+            return diets;
+        }
+
+        String sql = "SELECT * FROM diet_plan WHERE user = ?;";
+
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, user);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Diet diet = new Diet();
+                diet.setId(resultSet.getInt("id"));
+                diet.setUser(resultSet.getString("user"));
+                diet.setEmployee(resultSet.getString("employee"));
                 diet.setDescription(resultSet.getString("description"));
                 diet.setAge(resultSet.getInt("age"));
                 diet.setHeight(resultSet.getDouble("height"));
@@ -162,46 +296,6 @@ public class DietPlanRepository {
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
             return diets;
-        }
-
-        return diets;
-    }
-
-    public List<Diet> getDietsByEmployeeUUID(String employeeUUID) {
-
-        List<Diet> diets = new ArrayList<>();
-
-        if (employeeUUID == null || employeeUUID.isEmpty()) {
-            return diets;
-        }
-
-        String sql = "SELECT * FROM diet_plan WHERE employee_uuid = ?;";
-
-        try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            preparedStatement.setString(1, employeeUUID);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Diet diet = new Diet();
-                diet.setId(resultSet.getInt("id"));
-                diet.setUserUUID(resultSet.getString("user_uuid"));
-                diet.setEmployeeUUID(resultSet.getString("employee_uuid"));
-                diet.setDescription(resultSet.getString("description"));
-                diet.setAge(resultSet.getInt("age"));
-                diet.setHeight(resultSet.getDouble("height"));
-                diet.setWeight(resultSet.getDouble("weight"));
-
-                String mealPlanJson = resultSet.getString("meal_plan");
-                List<MealPlan> mealPlans = generateObjectFromJSon(mealPlanJson, new TypeReference<List<MealPlan>>() {});
-                diet.setMealPlans(mealPlans);
-
-                diets.add(diet);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("SQL Error: " + e.getMessage());
         }
 
         return diets;

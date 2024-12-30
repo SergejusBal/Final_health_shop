@@ -128,6 +128,28 @@ public class UserRepository{
 
     }
 
+    public String getUsernameByUuid(String uuid) {
+
+        if (uuid == null || uuid.isEmpty()) return null;
+
+        String sql = "SELECT username FROM users WHERE uuid = ?";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, uuid);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) return resultSet.getString("username");
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return null;
+        }
+
+        return null;
+    }
+
 
 
     public User getUserInfoFromUUID(String uuid){
