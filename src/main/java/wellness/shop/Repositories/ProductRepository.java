@@ -191,7 +191,7 @@ public class ProductRepository {
 
         List<Product> productList = new ArrayList<>();
 
-        String sql = "SELECT * FROM product WHERE category = ? LIMIT ? OFFSET ?;";
+        String sql = "SELECT * FROM product WHERE category = ? ORDER BY id DESC LIMIT ? OFFSET ?;";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -228,7 +228,7 @@ public class ProductRepository {
 
         List<Product> productList = new ArrayList<>();
 
-        String sql = "SELECT * FROM product WHERE name LIKE ? LIMIT ? OFFSET ?;";
+        String sql = "SELECT * FROM product WHERE name LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?;";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

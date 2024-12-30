@@ -51,7 +51,7 @@ public class UserService {
     }
 
     public String deleteUser(String username, String authorizationHeader) {
-        if (!isAuthorized(authorizationHeader)) {
+        if (!isAuthorized(authorizationHeader,Privileges.MODIFY_USERS)) {
             return "No authorization";
         }
 
@@ -66,7 +66,7 @@ public class UserService {
     }
 
     public String changeUserRole(String username, Role role, String authorizationHeader) {
-        if (!isAuthorized(authorizationHeader)) {
+        if (!isAuthorized(authorizationHeader,Privileges.MODIFY_USERS)) {
             return "No authorization";
         }
 
@@ -81,7 +81,7 @@ public class UserService {
     }
 
     public String createPrivilege(String username, Privileges privileges, String authorizationHeader) {
-        if (!isAuthorized(authorizationHeader)) {
+        if (!isAuthorized(authorizationHeader,Privileges.MODIFY_USERS)) {
             return "No authorization";
         }
 
@@ -97,7 +97,7 @@ public class UserService {
     }
 
     public String deletePrivilege(String username, Privileges privileges, String authorizationHeader) {
-        if (!isAuthorized(authorizationHeader)) {
+        if (!isAuthorized(authorizationHeader,Privileges.MODIFY_USERS)) {
             return "No authorization";
         }
 
@@ -112,7 +112,7 @@ public class UserService {
     }
 
     public String createSpecialization(String username, Specialization specialization, String authorizationHeader) {
-        if (!isAuthorized(authorizationHeader)) {
+        if (!isAuthorized(authorizationHeader,Privileges.MODIFY_USERS)) {
             return "No authorization";
         }
 
@@ -128,7 +128,7 @@ public class UserService {
     }
 
     public String deleteSpecialization(String username, Specialization specialization, String authorizationHeader) {
-        if (!isAuthorized(authorizationHeader)) {
+        if (!isAuthorized(authorizationHeader,Privileges.MODIFY_USERS)) {
             return "No authorization";
         }
 
@@ -143,7 +143,7 @@ public class UserService {
     }
 
     public String createSubscription(String username, String authorizationHeader) {
-        if (!isAuthorized(authorizationHeader)) {
+        if (!isAuthorized(authorizationHeader,Privileges.MODIFY_USERS)) {
             return "No authorization";
         }
 
@@ -159,7 +159,7 @@ public class UserService {
     }
 
     public String modifySubscription(String username, Boolean status, String authorizationHeader){
-        if (!isAuthorized(authorizationHeader)) {
+        if (!isAuthorized(authorizationHeader,Privileges.MODIFY_USERS)) {
             return "No authorization";
         }
 
@@ -176,7 +176,7 @@ public class UserService {
     }
 
     public String deleteSubscription(String username, String authorizationHeader) {
-        if (!isAuthorized(authorizationHeader)) {
+        if (!isAuthorized(authorizationHeader,Privileges.MODIFY_USERS)) {
             return "No authorization";
         }
 
@@ -192,7 +192,7 @@ public class UserService {
 
 
 
-    private boolean isAuthorized(String authorizationHeader) {
+    public boolean isAuthorized(String authorizationHeader, Privileges privileges) {
         if (StringUtils.startsWithIgnoreCase(authorizationHeader, "Bearer ")) {
             authorizationHeader = authorizationHeader.substring(7);
         } else {
@@ -202,7 +202,20 @@ public class UserService {
         Claims claims = jwt.decodeJwt(authorizationHeader);
         String adminUUID = claims.get("userUUID", String.class);
 
-        return userRepository.checkPrivilege(adminUUID, Privileges.MODIFY_USERS);
+        return userRepository.checkPrivilege(adminUUID, privileges);
+    }
+
+    public boolean isAuthorized(String authorizationHeader, Specialization specialization) {
+        if (StringUtils.startsWithIgnoreCase(authorizationHeader, "Bearer ")) {
+            authorizationHeader = authorizationHeader.substring(7);
+        } else {
+            return false;
+        }
+
+        Claims claims = jwt.decodeJwt(authorizationHeader);
+        String employeeUUID = claims.get("userUUID", String.class);
+
+        return userRepository.checkSpecialization(employeeUUID, specialization);
     }
 
     private String handleUserAction(String username, Function<String, Boolean> action, String successMessage, String failureMessage) {

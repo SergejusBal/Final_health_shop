@@ -401,6 +401,29 @@ public class UserRepository{
         return specialization;
     }
 
+    public boolean checkSpecialization(String uuid, Specialization specialization){
+
+        if(uuid == null || specialization == null) return false;
+
+        String sql = "SELECT 1 FROM employee_info WHERE uuid = ? AND specialization = ? LIMIT 1";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1,uuid);
+            preparedStatement.setString(2,specialization.name());
+            ResultSet resultSet =  preparedStatement.executeQuery();
+
+            if(resultSet.next()) return true;
+
+        }catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return false;
+        }
+
+        return false;
+    }
+
     public boolean createSpecialization(String uuid, Specialization specialization) {
         boolean isCreated = false;
 
