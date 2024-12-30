@@ -99,6 +99,7 @@ public class JWT {
                io.jsonwebtoken.ExpiredJwtException |
                io.jsonwebtoken.MalformedJwtException |
                io.jsonwebtoken.UnsupportedJwtException |
+               io.jsonwebtoken.io.DecodingException |
                IllegalArgumentException e) {
             return false;
         }
@@ -123,6 +124,7 @@ public class JWT {
                 io.jsonwebtoken.ExpiredJwtException |
                 io.jsonwebtoken.MalformedJwtException |
                 io.jsonwebtoken.UnsupportedJwtException |
+                io.jsonwebtoken.io.DecodingException |
                 IllegalArgumentException e) {
             return null;
         }
@@ -146,6 +148,7 @@ public class JWT {
                io.jsonwebtoken.ExpiredJwtException |
                io.jsonwebtoken.MalformedJwtException |
                io.jsonwebtoken.UnsupportedJwtException |
+               io.jsonwebtoken.io.DecodingException |
                IllegalArgumentException e) {
             return null;
         }

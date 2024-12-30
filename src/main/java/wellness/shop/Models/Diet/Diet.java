@@ -8,14 +8,18 @@ public class Diet {
 
     private int id;
     private String description;
-    private String userUUID;
-    private String employeeUUID;
+    private String user;
+    private String employee;
     private int age;
     private double height;
     private double weight;
     private List<MealPlan> mealPlans;
 
     public Diet() {
+    }
+
+    public Diet(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -26,12 +30,12 @@ public class Diet {
         return description;
     }
 
-    public String getUserUUID() {
-        return userUUID;
+    public String getUser() {
+        return user;
     }
 
-    public String getEmployeeUUID() {
-        return employeeUUID;
+    public String getEmployee() {
+        return employee;
     }
 
     public int getAge() {
@@ -58,12 +62,12 @@ public class Diet {
         this.description = description;
     }
 
-    public void setUserUUID(String userUUID) {
-        this.userUUID = userUUID;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public void setEmployeeUUID(String employeeUUID) {
-        this.employeeUUID = employeeUUID;
+    public void setEmployee(String employee) {
+        this.employee = employee;
     }
 
     public void setAge(int age) {
@@ -85,11 +89,11 @@ public class Diet {
 //    {
 //        "id": 1,
 //            "description": "Balanced diet plan for weight loss",
-//            "userUUID": "John Doe",
+//            "user": "John Doe",
 //            "age": 30.0,
 //            "height": 175.5,
 //            "weight": 70.0,
-//            "employeeUUID": "Nutritionist Jane Doe",
+//            "employee": "Nutritionist Jane Doe",
 //            "mealPlans": [
 //        {
 //            "day": 1,

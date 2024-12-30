@@ -25,6 +25,14 @@ public class UserService {
     @Autowired
     private JWT jwt;
 
+    public String getUserUUIDByName(String username){
+        return userRepository.getUuidByUsername(username);
+    }
+
+    public String getUserNameByUUID(String userUUID){
+        return userRepository.getUsernameByUuid(userUUID);
+    }
+
 
     public String registerUser(Guest user) {
 
@@ -32,6 +40,7 @@ public class UserService {
 
         return userRepository.registerUser(user);
     }
+
 
 
     public HashMap<String,String> login(Guest guestUser) {
