@@ -1,6 +1,8 @@
 package wellness.shop.Models;
 
-public class FoodItem {
+import java.io.Serializable;
+
+public class FoodItem implements Serializable {
     private int id;
     private String food;
     private Double calories;
@@ -9,7 +11,7 @@ public class FoodItem {
     private Double carbohydrates;
     private Double fibers;
 
-    public FoodItem() {
+    public FoodItem(){
     }
 
     public int getId() {

@@ -120,6 +120,24 @@ public class FilterConfig {
         return registrationBean;
     }
 
+    @Bean
+    public FilterRegistrationBean<RoleFilter> addUserFoodControllerFilter() {
+        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new RoleFilter(jwt,allowedUserRoles));
+        registrationBean.addUrlPatterns("/food/users/*");
+        registrationBean.setOrder(3);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<RoleFilter> addSecuredFoodControllerFilter() {
+        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new RoleFilter(jwt,allowedAdminRoles));
+        registrationBean.addUrlPatterns("/food/secured/*");
+        registrationBean.setOrder(3);
+        return registrationBean;
+    }
+
 
 
 

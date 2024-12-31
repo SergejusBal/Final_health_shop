@@ -19,9 +19,9 @@ public class Redis {
 
     }
 
-    public void putWithSerialize(String key, Object value) throws IOException {
+    public void putWithSerialize(String key, Object value, int exTime) throws IOException {
         try (Jedis jedis = jedisPool.getResource()) {
-            jedis.set(key.getBytes(), serialize(value));
+            jedis.setex(key.getBytes(), exTime, serialize(value));
         }
     }
 

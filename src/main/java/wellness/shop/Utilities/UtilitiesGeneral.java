@@ -51,6 +51,13 @@ public class UtilitiesGeneral {
             Map.entry("Diet was modified", HttpStatus.OK),
             Map.entry("Diet was successfully deleted", HttpStatus.OK),
 
+            Map.entry("FoodItem not found", HttpStatus.NOT_FOUND),
+            Map.entry("FoodItem already exists", HttpStatus.CONFLICT),
+            Map.entry("Fail to add FoodItem or it already exists", HttpStatus.BAD_REQUEST),
+            Map.entry("FoodItem was successfully deleted", HttpStatus.OK),
+            Map.entry("FoodItem was successfully added", HttpStatus.OK),
+            Map.entry("FoodItem was successfully modified", HttpStatus.OK),
+
             Map.entry("Email already exists", HttpStatus.CONFLICT),
             Map.entry("Email was successfully added", HttpStatus.OK)
     );
