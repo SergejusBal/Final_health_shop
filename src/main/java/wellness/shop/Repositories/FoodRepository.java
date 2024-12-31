@@ -131,7 +131,7 @@ public class FoodRepository {
         return foodItem;
     }
 
-    public boolean deleteFood(String foodName) {
+    public boolean deleteFoodItem(String foodName) {
 
         if (foodName == null) return false;
 
