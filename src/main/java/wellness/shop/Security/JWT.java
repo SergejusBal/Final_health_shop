@@ -24,9 +24,6 @@ public class JWT {
     @Value("${jwt.token.expiration}")
     private long TOKEN_EXPIRATION;
 
-
-
-
     /**
      * Decodes JWToken to claims;
      */

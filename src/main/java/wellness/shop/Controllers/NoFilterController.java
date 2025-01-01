@@ -1,14 +1,18 @@
 package wellness.shop.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import wellness.shop.Models.Product;
 import wellness.shop.Models.Users.Enums.Role;
 import wellness.shop.Repositories.ProductRepository;
 import wellness.shop.Security.JWT;
+import wellness.shop.Services.StripeService;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -18,6 +22,12 @@ public class NoFilterController {
 
     @Autowired
     private JWT jwt;
+
+    @Value("${website.url}")
+    private String frontEndURL;
+
+    @Autowired
+    private StripeService stripeService;
 
     @GetMapping("/refresh")
     public ResponseEntity<String> refresh(@RequestHeader("Authorization") String authorizationHeader) {
@@ -37,16 +47,16 @@ public class NoFilterController {
         }
     }
 
-    @Autowired
-    ProductRepository productRepository;
-
-    @PostMapping("/test")
-    public ResponseEntity<List<Product>> createSpecialization(@RequestBody Product product) {
-
-        return new ResponseEntity<>(productRepository.getProductsByCategory("Computers",10,0), HttpStatus.OK);
-
+    @GetMapping("/stripe/{userUUID}/{secretUUID}/{paymentID}")
+    public RedirectView redirect(@PathVariable String userUUID, @PathVariable String secretUUID, @PathVariable int paymentID) {
+        stripeService.setProcessPaymentStatus(paymentID,userUUID,secretUUID);
+        return new RedirectView(frontEndURL +"/success.html");
     }
-
+    @GetMapping("/stripe/{userUUID}/{paymentID}")
+    public RedirectView redirect(@PathVariable String userUUID,@PathVariable int paymentID) {
+        stripeService.setProcessPaymentStatus(paymentID,userUUID,null);
+        return new RedirectView(frontEndURL + "/fail.html");
+    }
 
 
 }

@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import wellness.shop.Models.BillingOrder.PaymentStatus;
 import wellness.shop.Models.Product;
 
 
@@ -260,7 +261,6 @@ public class ProductRepository {
         return productList;
     }
 
-
     public BigDecimal getPriceById(int id) {
 
         BigDecimal price = null;
@@ -285,6 +285,36 @@ public class ProductRepository {
 
         return price;
     }
+
+    public boolean registerDietService(int orderID, int productID) {
+
+        boolean isCreated = false;
+
+        if (orderID == 0 || productID == 0){
+            return isCreated;
+        }
+
+        String sql = "INSERT INTO diet_service (order_id, product_id, payment_status) VALUES (?, ?, ?);";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, orderID);
+            preparedStatement.setInt(2, productID);
+            preparedStatement.setString(3, PaymentStatus.PENDING.name());
+
+            int rowsCreated = preparedStatement.executeUpdate();
+            isCreated = rowsCreated > 0;
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return isCreated;
+        }
+
+        return isCreated;
+    }
+
+
 
 
 }
