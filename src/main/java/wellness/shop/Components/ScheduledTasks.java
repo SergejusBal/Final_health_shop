@@ -8,7 +8,12 @@ import wellness.shop.Integration.RabbitMQ;
 import wellness.shop.Integration.RabbitMQMessageProcessor;
 import wellness.shop.Integration.Redis;
 import wellness.shop.Repositories.IPRepository;
+import wellness.shop.Utilities.UtilitiesGeneral;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Component
@@ -45,6 +50,21 @@ public class ScheduledTasks {
         banIps(bannedIpsList);
 
     }
+
+    @Scheduled(fixedRate = 100000)
+    public void createRegistrationNewDates(){
+
+        List<LocalDateTime> dateTimes = UtilitiesGeneral.generateFutureTimeSlots(30);
+
+        for (LocalDateTime l : dateTimes) {
+            System.out.println(l);
+        }
+
+    }
+
+
+
+
 
     /**
      * This method calculates how many HTTP request each IP had. This is done using RabbitMQ.

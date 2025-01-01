@@ -98,6 +98,11 @@ public class ProductService {
         );
     }
 
+    public boolean registerDietServiceInternal(int orderID, int productID) {
+        return productRepository.registerDietService(orderID, productID);
+    }
+
+
     private String handleUserAction(Supplier<Boolean> action, String successMessage, String failureMessage) {
         return action.get() ? successMessage : failureMessage;
     }

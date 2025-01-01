@@ -1,7 +1,9 @@
 package wellness.shop.Models.Users;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import wellness.shop.Models.Users.Enums.Role;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class User {
 
     private int ID;

@@ -3,10 +3,14 @@ package wellness.shop.Utilities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -58,8 +62,15 @@ public class UtilitiesGeneral {
             Map.entry("FoodItem was successfully added", HttpStatus.OK),
             Map.entry("FoodItem was successfully modified", HttpStatus.OK),
 
-            Map.entry("Email already exists", HttpStatus.CONFLICT),
-            Map.entry("Email was successfully added", HttpStatus.OK)
+            Map.entry("Order not Found", HttpStatus.NOT_FOUND),
+            Map.entry("Order paymentStatus not found", HttpStatus.NOT_FOUND),
+            Map.entry("Order was modified", HttpStatus.OK),
+
+            Map.entry("RefundKey not Found", HttpStatus.NOT_FOUND),
+            Map.entry("Invalid payment intent key", HttpStatus.BAD_REQUEST),
+            Map.entry("No refund available", HttpStatus.OK),
+            Map.entry("Refund was successful", HttpStatus.OK)
+
     );
 
 
@@ -72,6 +83,30 @@ public class UtilitiesGeneral {
             return false;
         }
         return Pattern.matches(EMAIL_REGEX, email);
+    }
+
+
+    public static List<LocalDateTime> generateFutureTimeSlots(Integer daysAhead) {
+        List<LocalDateTime> timeSlots = new ArrayList<>();
+
+        LocalDate startDate = LocalDate.now().plusDays(daysAhead);
+
+        if (startDate.getDayOfWeek() == DayOfWeek.SATURDAY || startDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            return null;
+        }
+
+        LocalTime startTime = LocalTime.of(8, 0);
+        LocalTime endTime = LocalTime.of(16, 30);
+
+        for (LocalTime time = startTime; time.isBefore(endTime.plusMinutes(30)); time = time.plusMinutes(30)) {
+
+            if (time.equals(LocalTime.of(12, 0)) || time.equals(LocalTime.of(12, 30))) {
+                continue;
+            }
+            timeSlots.add(LocalDateTime.of(startDate, time));
+        }
+
+        return timeSlots;
     }
 
 

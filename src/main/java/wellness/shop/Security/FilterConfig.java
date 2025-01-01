@@ -43,103 +43,82 @@ public class FilterConfig {
     @Autowired
     JWT jwt;
     Role[] allowedAdminRoles = {Role.ADMIN};
-    Role[] allowedEmployeeRoles = {Role.ADMIN,Role.EMPLOYEE};
-    Role[] allowedUserRoles = {Role.ADMIN,Role.EMPLOYEE,Role.REGULAR};
-    Role[] allowedGuestRoles = {Role.ADMIN,Role.EMPLOYEE,Role.REGULAR,Role.GUEST};
+    Role[] allowedEmployeeRoles = {Role.ADMIN, Role.EMPLOYEE};
+    Role[] allowedUserRoles = {Role.ADMIN, Role.EMPLOYEE, Role.REGULAR};
+    Role[] allowedGuestRoles = {Role.ADMIN, Role.EMPLOYEE, Role.REGULAR, Role.GUEST};
+
     @Bean
     public FilterRegistrationBean<RoleFilter> addAdminFilter() {
-        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RoleFilter(jwt,allowedAdminRoles));
-        registrationBean.addUrlPatterns("/admin/*");
-        registrationBean.setOrder(3);
-        return registrationBean;
+        return createFilter("/admin/*", allowedAdminRoles);
     }
-
 
     @Bean
     public FilterRegistrationBean<RoleFilter> addEmployeeFilter() {
-        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RoleFilter(jwt,allowedEmployeeRoles));
-        registrationBean.addUrlPatterns("/employee/*");
-        registrationBean.setOrder(3);
-        return registrationBean;
+        return createFilter("/employee/*", allowedEmployeeRoles);
     }
 
     @Bean
     public FilterRegistrationBean<RoleFilter> addRegularUserFilter() {
-        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RoleFilter(jwt,allowedUserRoles));
-        registrationBean.addUrlPatterns("/user/*");
-        registrationBean.setOrder(3);
-        return registrationBean;
+        return createFilter("/user/*", allowedUserRoles);
     }
-
 
     @Bean
     public FilterRegistrationBean<RoleFilter> addGuestFilter() {
-        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RoleFilter(jwt,allowedGuestRoles));
-        registrationBean.addUrlPatterns("/guest/*");
-        registrationBean.setOrder(3);
-        return registrationBean;
+        return createFilter("/guest/*", allowedGuestRoles);
     }
 
     @Bean
     public FilterRegistrationBean<RoleFilter> addPublicProductControllerFilter() {
-        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RoleFilter(jwt,allowedGuestRoles));
-        registrationBean.addUrlPatterns("/product/public/*");
-        registrationBean.setOrder(3);
-        return registrationBean;
+        return createFilter("/product/public/*", allowedGuestRoles);
     }
 
     @Bean
     public FilterRegistrationBean<RoleFilter> addSecuredProductControllerFilter() {
-        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RoleFilter(jwt,allowedAdminRoles));
-        registrationBean.addUrlPatterns("/product/secured/*");
-        registrationBean.setOrder(3);
-        return registrationBean;
+        return createFilter("/product/secured/*", allowedAdminRoles);
     }
 
     @Bean
     public FilterRegistrationBean<RoleFilter> addUserDietControllerFilter() {
-        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RoleFilter(jwt,allowedUserRoles));
-        registrationBean.addUrlPatterns("/diet/users/*");
-        registrationBean.setOrder(3);
-        return registrationBean;
+        return createFilter("/diet/users/*", allowedUserRoles);
     }
 
     @Bean
     public FilterRegistrationBean<RoleFilter> addSecuredDietControllerFilter() {
-        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RoleFilter(jwt,allowedEmployeeRoles));
-        registrationBean.addUrlPatterns("/diet/secured/*");
-        registrationBean.setOrder(3);
-        return registrationBean;
+        return createFilter("/diet/secured/*", allowedEmployeeRoles);
     }
 
     @Bean
     public FilterRegistrationBean<RoleFilter> addUserFoodControllerFilter() {
-        FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RoleFilter(jwt,allowedUserRoles));
-        registrationBean.addUrlPatterns("/food/users/*");
-        registrationBean.setOrder(3);
-        return registrationBean;
+        return createFilter("/food/users/*", allowedUserRoles);
     }
 
     @Bean
     public FilterRegistrationBean<RoleFilter> addSecuredFoodControllerFilter() {
+        return createFilter("/food/secured/*", allowedAdminRoles);
+    }
+
+    @Bean
+    public FilterRegistrationBean<RoleFilter> addUserOrderControllerFilter() {
+        return createFilter("/order/public/*", allowedGuestRoles);
+    }
+
+    @Bean
+    public FilterRegistrationBean<RoleFilter> addSecuredOrderControllerFilter() {
+        return createFilter("/order/secured/*", allowedAdminRoles);
+    }
+
+    @Bean
+    public FilterRegistrationBean<RoleFilter> addPublicControllerFilter() {
+        return createFilter("/stripe/*", allowedGuestRoles);
+    }
+
+    private FilterRegistrationBean<RoleFilter> createFilter(String urlPattern, Role[] allowedRoles) {
         FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RoleFilter(jwt,allowedAdminRoles));
-        registrationBean.addUrlPatterns("/food/secured/*");
+        registrationBean.setFilter(new RoleFilter(jwt, allowedRoles));
+        registrationBean.addUrlPatterns(urlPattern);
         registrationBean.setOrder(3);
         return registrationBean;
     }
-
-
-
 
 
 

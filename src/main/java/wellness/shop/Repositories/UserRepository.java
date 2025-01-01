@@ -298,8 +298,8 @@ public class UserRepository{
             }
 
 
-        }catch (SQLException e) {
-            System.out.println("SQL Error: " + e.getMessage());
+        } catch (SQLException | IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
             return privileges;
         }
 
@@ -415,8 +415,8 @@ public class UserRepository{
             }
 
 
-        }catch (SQLException e) {
-            System.out.println("SQL Error: " + e.getMessage());
+        } catch (SQLException | IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
             return specialization;
         }
 
