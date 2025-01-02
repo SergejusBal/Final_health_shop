@@ -121,7 +121,9 @@ public class ProductRepository {
         return isUpdated;
     }
 
-    public boolean deleteProductByID(int id) {
+    public boolean deleteProductByID(int productID) {
+
+        deleteProductServiceById(productID);
 
         boolean isDeleted = false;
 
@@ -130,7 +132,7 @@ public class ProductRepository {
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, productID);
 
             int rowsDeleted = preparedStatement.executeUpdate();
             isDeleted = rowsDeleted > 0;
@@ -142,25 +144,20 @@ public class ProductRepository {
         return isDeleted;
     }
 
-    public boolean deleteProductByName(String name) {
+    public void deleteProductServiceById(int productID) {
 
-        boolean isDeleted = false;
-
-        String sql = "DELETE FROM product WHERE name = ?";
+        String sql = "DELETE FROM product_service WHERE id = ?";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString(1, name);
-
+            preparedStatement.setInt(1, productID);
             int rowsDeleted = preparedStatement.executeUpdate();
-            isDeleted = rowsDeleted > 0;
+
 
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
-            return isDeleted;
         }
-        return isDeleted;
     }
 
 
@@ -313,6 +310,34 @@ public class ProductRepository {
 
         return isCreated;
     }
+
+
+    public boolean registerProductService(String employeeUuid, int productId, String employeeWebsocketKey) {
+        boolean isCreated = false;
+
+        if (employeeUuid == null || employeeWebsocketKey == null) {
+            return isCreated;
+        }
+
+        String sql = "INSERT INTO product_service (employee_uuid, product_id, employee_websocket_key) VALUES (?, ?, ?);";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, employeeUuid);
+            preparedStatement.setInt(2, productId);
+            preparedStatement.setString(3, employeeWebsocketKey);
+
+            int rowsCreated = preparedStatement.executeUpdate();
+            isCreated = rowsCreated > 0;
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+
+        return isCreated;
+    }
+
 
 
 

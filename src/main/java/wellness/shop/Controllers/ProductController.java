@@ -56,9 +56,18 @@ public class ProductController {
 
 
     @PostMapping("/secured/new")
-    public ResponseEntity<String> registerUser(@RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<String> registerProduct(@RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = productService.registerProduct(product,authorizationHeader);
+
+        return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
+
+    }
+
+    @PostMapping("/secured/service/new/{employeeName}")
+    public ResponseEntity<String> registerService(@RequestBody Product product, @PathVariable String employeeName, @RequestHeader("Authorization") String authorizationHeader) {
+
+        String response = productService.registerProductService(product,employeeName,authorizationHeader);
 
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
 

@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import wellness.shop.Models.Product;
 import wellness.shop.Models.Users.Enums.Role;
+import wellness.shop.Repositories.DateRegistrationRepository;
 import wellness.shop.Repositories.ProductRepository;
 import wellness.shop.Security.JWT;
 import wellness.shop.Services.StripeService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,6 +60,17 @@ public class NoFilterController {
         stripeService.setProcessPaymentStatus(paymentID,userUUID,null);
         return new RedirectView(frontEndURL + "/fail.html");
     }
+
+
+    @Autowired
+    private DateRegistrationRepository dateRegistrationRepository;
+
+    @GetMapping("/test/{startDate}/{endDate}/{webKey}")
+    public ResponseEntity<List<LocalDateTime>> getTest(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable String webKey) {
+        List<LocalDateTime> localDateTimeList = dateRegistrationRepository.getTimeSlotsWithinDateRange(startDate,endDate,webKey);
+        return new ResponseEntity(localDateTimeList,HttpStatus.OK);
+    }
+
 
 
 }
