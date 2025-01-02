@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import wellness.shop.Integration.RabbitMQ;
 import wellness.shop.Integration.RabbitMQMessageProcessor;
 import wellness.shop.Integration.Redis;
+import wellness.shop.Repositories.DateRegistrationRepository;
 import wellness.shop.Repositories.IPRepository;
 import wellness.shop.Utilities.UtilitiesGeneral;
 
@@ -30,6 +31,8 @@ public class ScheduledTasks {
 
     @Autowired
     private IPRepository ipRepository;
+    @Autowired
+    private DateRegistrationRepository dateRegistrationRepository;
 
     private RabbitMQ rabbitMQ;
 
@@ -44,27 +47,26 @@ public class ScheduledTasks {
 
     @Scheduled(fixedRate = 60000)
     public void IPChecks(){
-
         HashMap<String,Integer> ipMap = getIPMap();
         List<String> bannedIpsList = getBanList(ipMap);
         banIps(bannedIpsList);
-
     }
 
-    @Scheduled(fixedRate = 100000)
+    @Scheduled(fixedRate = 86400000)
     public void createRegistrationNewDates(){
 
+        List<String> webSocketKeys = dateRegistrationRepository.getUniqueWebsocketKeys();
         List<LocalDateTime> dateTimes = UtilitiesGeneral.generateFutureTimeSlots(30);
+        if(dateTimes == null) return;
 
-        for (LocalDateTime l : dateTimes) {
-            System.out.println(l);
+        for(String key: webSocketKeys){
+            if(dateRegistrationRepository.doesDateExist(dateTimes.getFirst(),key)) continue;
+            for(LocalDateTime localDateTime: dateTimes){
+                dateRegistrationRepository.registerRegistrationDate(localDateTime,key);
+            }
         }
 
     }
-
-
-
-
 
     /**
      * This method calculates how many HTTP request each IP had. This is done using RabbitMQ.
