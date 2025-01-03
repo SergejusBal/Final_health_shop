@@ -64,6 +64,7 @@ public class UtilitiesGeneral {
 
             Map.entry("Order not Found", HttpStatus.NOT_FOUND),
             Map.entry("Order paymentStatus not found", HttpStatus.NOT_FOUND),
+            Map.entry("Order paymentStatus was modified", HttpStatus.OK),
             Map.entry("Order was modified", HttpStatus.OK),
 
             Map.entry("RefundKey not Found", HttpStatus.NOT_FOUND),
