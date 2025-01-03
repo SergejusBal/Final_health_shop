@@ -49,7 +49,8 @@ public class UserService {
 
         User user = userRepository.getUserInfo(guestUser.getUsername());
 
-        if(BCrypt.checkpw(guestUser.getPassword(), user.getPassword())){
+
+        if(user != null && BCrypt.checkpw(guestUser.getPassword(), user.getPassword())){
             response.put("status","User authorize");
             response.put("JWToken", jwt.generateJwt(user.getUUID(),user.getRole()));
             return response;
