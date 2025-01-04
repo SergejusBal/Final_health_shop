@@ -7,6 +7,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -58,14 +59,14 @@ public class DateRegistrationRepository {
         }
     }
 
-    public List<LocalDateTime> getTimeSlotsWithinDateRange(LocalDate startDate, LocalDate endDate, String webSocketKey) {
+    public HashMap<LocalDateTime,String> getTimeSlotsWithinDateRange(LocalDate startDate, LocalDate endDate, String webSocketKey) {
 
-        String sql = "SELECT time_slot FROM service_calendar " +
+        String sql = "SELECT time_slot, user_uuid FROM service_calendar " +
                      "WHERE employee_websocket_key = ? " +
                      "AND time_slot >= ? " +
                      "AND time_slot < ?";
 
-        List<LocalDateTime> timeSlots = new ArrayList<>();
+        HashMap<LocalDateTime,String> timeSlots = new HashMap<>();
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -77,7 +78,7 @@ public class DateRegistrationRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                timeSlots.add(LocalDateTime.parse(resultSet.getString("time_slot")));
+                timeSlots.put(LocalDateTime.parse(resultSet.getString("time_slot")),resultSet.getString("user_uuid"));
             }
 
         } catch (SQLException e) {

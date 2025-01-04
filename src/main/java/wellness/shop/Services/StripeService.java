@@ -134,6 +134,7 @@ public class StripeService {
             BigDecimal price = productService.getPriceById(item.getProductId());
             if (price == null) continue;
 
+            price = price.multiply(BigDecimal.valueOf(item.getQuantity()));
             String category = item.getCategory();
 
             if (category.equals("Service")) {

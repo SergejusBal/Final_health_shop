@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Healthy life</title>   
+
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/popup.css">
+    <link rel="stylesheet" href="css/shop_page.css">
+
+    <script src="js/cookies.js" defer></script>  
+    <script src="js/APIcoms.js" defer></script>  
+    <script src="js/login.js" defer></script>  
+    <script src="js/shop_page.js" defer></script>  
+    
+
+</head>
+<body>
+    <div class="nav-div">
+        <nav class="nav-left">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li>
+                    <a href="#">Shop</a>
+                    <ul>
+                        <li><a href="/shop_page.html">Healthy Products</a></li>
+                        <li><a href="/#">Diet Plans</a></li>
+                        <li><a href="/#">Sports Plans</a></li>
+                    </ul>
+                </li>   
+                <li id="show-calculator"><a href="#">Calculator</a></li>             
+                <li id="show-about"><a href="#">About us</a></li>                
+                <li id="show-lang">
+                    <a href="#">Languages</a>
+                    <ul>
+                        <li><a href="#">English</a></li>
+                        <li><a href="#">Lietuvių</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-right">
+            <ul style="justify-content: flex-end;">    
+                <li><a href="cart_page.html" style="font-weight: bold;"> 🛒 </a></li>
+                <li class="hamburger-menu">
+                    <a href="#" style="font-weight: bold;">☰</a>
+                    <ul>
+                        <li onclick="openSignIn()">     <a id="signInButton"> Sign in</a></li> 
+                        <li>                        <a href="#">Favourites</a></li>
+                        <li id="hide-settings">     <a href="#">Settings</a></li> 
+                        <li id="hide-admin">        <a href="/admin.html">Admin panel</a></li>
+                        <li id="hide-employee">     <a href="#">Employee panel</a></li>
+                        <li id="hide-about">        <a href="#">About us</a></li> 
+                        <li id="hide-calculator">   <a href="#">Calculator</a></li>                    
+                        <li id="hide-lang">         <a href="#">Languages</a></li> 
+                        <li>                        <a href="#">Help center</a></li>
+
+                    </ul>
+                </li>                
+            </ul>            
+        </nav>
+
+    </div>
+
+    <div class="hero">
+        <img src="img/heroImage.webp" alt="Healthy food on a cutting board with vegetables and meat">
+
+        <div class="center-content">  
+
+            <div class="main-section">  
+
+                <div class = "controlPannel">
+                    <div class="columnDiv">
+                        <div>
+                            <label>Find by category:</label>
+                            <select id="productCategory">
+                                <option value="" disabled selected>Select a category</option>
+                                <option value="Beverages">Beverages</option>
+                                <option value="Dairy">Dairy</option>                         
+                                <option value="Grains">Grains</option>
+                                <option value="Service">Service</option>
+                                <option value="Snacks">Snacks</option>
+                                <option value="Spreads">Spreads</option>
+                                <option value="Superfoods">Superfoods</option>
+                                <option value="Sweeteners">Sweeteners</option>
+                              </select>
+                       
+                            <div class="buttonDiv">                          
+                                <button class="action-button" onclick="findProductsByCategory()">Find by category</button>
+                            </div>     
+                         </div>
+
+                        <div >
+                            <label>Find by name:</label>
+                            <input id="productsName" placeholder="Enter product name" />
+                       
+                            <div class="buttonDiv">                          
+                                <button class="action-button" onclick="findProductsByName()">Find by name</button>
+                            </div>
+                        </div>
+                        <h1 id="productMessage"></h1>
+                    </div>    
+                        
+                </div>
+
+                <div id = "productCardCointainer" class="columnDivCards">
+
+                </div>
+            <div>       
+                      
+        </div>
+    </div>
+
+
+    <div id="SignInpopup" class="popup">
+        <div class="popup-content">
+            <span class="close-popup-button" onclick="closeSignIn()">&times;</span>
+            <h2>Sign In</h2>
+            <form>
+
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="username" required>               
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="password" required>                
+                
+                <button type="button" onclick="signIn()">Sign In</button>
+                <button type="button" onclick="register()">Register</button>
+
+                <p id="signIn_message"> </p>
+            </form>
+    </div>
+
+
+</body>
+</html>

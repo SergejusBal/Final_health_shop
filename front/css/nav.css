@@ -1,0 +1,161 @@
+
+.nav-div {
+    display: flex;
+    flex-direction: row;   
+    width: 100%;
+    justify-content: space-around;    
+    background-color: #0f1f0a; 
+    z-index: 1;   
+}
+
+.nav-left {    
+    background-color: #0f1f0a;     
+}
+
+.nav-left ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;  
+  
+}
+
+.nav-left ul li {    
+    position: relative; 
+}
+
+.nav-left ul li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 30px 20px;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-left ul li a:hover {
+    background-color: #012f14;
+}
+
+.nav-left ul li ul {
+    display: none; 
+    position: absolute; 
+    top: 100%;
+    left: 0px; 
+    background-color: #0f1f0a;
+    z-index: 1000; 
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+    min-width: 100%;
+}
+
+.nav-left ul li ul li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    white-space: nowrap; 
+    font-size: 18px;
+}
+
+.nav-left ul li:hover ul {
+    display: flex; 
+    flex-direction: column;
+}
+
+.nav-left ul li ul li a:hover {
+    background-color: #012f14;
+}
+
+.nav-right {    
+    background-color: #0f1f0a;     
+}
+
+.nav-right ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;  
+}
+
+.nav-right ul li {    
+    position: relative; 
+}
+
+.nav-right ul li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 30px 20px;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-right ul li a:hover {
+    background-color: #012f14;
+}
+
+.nav-right ul li ul {
+    display: none; 
+    position: absolute; 
+    top: 100%;
+    right: 0px; 
+    background-color: #0f1f0a;
+    z-index: 1000; 
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+    min-width: 100%;
+}
+
+.nav-right ul li ul li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    white-space: nowrap; 
+    font-size: 18px;
+}
+
+.nav-right ul li:hover ul {
+    display: flex; 
+    flex-direction: column;
+}
+
+.nav-right ul li ul li a:hover {
+    background-color: #012f14;
+}
+
+
+#hide-lang,#hide-calculator,#hide-about,#hide-settings,#hide-employee,#hide-admin{
+    display: none;
+}
+
+
+@media (max-width: 800px) {
+    #show-lang {    
+        display: none;
+    }
+    #hide-lang{
+        display: flex;
+    }
+}
+
+@media (max-width: 650px) {
+    #show-calculator {    
+        display: none;
+    }
+    #hide-calculator {
+        display: flex;
+    }
+}
+
+@media (max-width: 550px) {
+    #show-about {    
+        display: none;
+    }
+    #hide-about {
+        display: flex;
+    }
+}

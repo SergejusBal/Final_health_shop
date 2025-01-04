@@ -33,7 +33,7 @@ public class ProductController {
 
         List<Product> products = productService.getProductsByCategory(category, limit, offset);
         if (!products.isEmpty()) return new ResponseEntity<>(products, HttpStatus.OK);
-        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping({"/public/name/","/public/name/{productName}"})
