@@ -1,0 +1,154 @@
+
+.center-content {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: white;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.main-section {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.action-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1e6f29; 
+    color: #f0fdf4;    
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.action-button:hover {
+    background-color: #174f1f; 
+    transform: scale(1.05); 
+}
+
+.controlPannel {
+    display: none;
+    flex-direction: column;
+    padding: 20px 30px; 
+    width: 800px; 
+    text-align: left; 
+}
+
+.controlPannel h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+
+.controlPannel input, .controlPannel textarea, .controlPannel select {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.orderCard {
+    border: 2px solid black; 
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 10px;
+    background-color:rgba(0, 255, 64, 0.2); 
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif; 
+}
+
+.columnDiv {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px;
+    padding: 20px;  
+
+    
+}
+
+.tableStyle {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.tableStyle th {
+    background-color: #D7DED9;
+    color: #333; 
+    border: 1px solid #ccc; 
+    padding: 10px;
+    text-align: left;
+}
+
+.tableStyle td {
+    background-color: #FAF9FA; 
+    color: #333; 
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.tableStyle tr:nth-child(even) td {
+    background-color: #FFFFFF; 
+}
+
+.tableStyle tr:hover td {
+    background-color: #D7DED9; 
+}
+
+
+#productDescription {
+    height: 100px;
+}
+
+
+.imgUploadDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+#imageInput {
+    display: none;
+}
+
+#imgLabel {
+    margin-top: 8px;
+}
+
+.buttonDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;   
+}
+
+@media (max-width: 800px) {
+    .button-container, .buttonDiv{
+        flex-direction: column;
+    }
+    .controlPannel{
+        width: 400px;
+    }
+    .columnDiv {
+        grid-template-columns: 1fr; 
+    }
+   
+       
+
+}

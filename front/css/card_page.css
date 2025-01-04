@@ -1,0 +1,178 @@
+
+.center-content {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: white;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.main-section {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.action-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1e6f29;     
+    color: #f0fdf4; 
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+   
+}
+
+.action-button:hover {
+    background-color: #174f1f; 
+    transform: scale(1.05); 
+}
+
+.action-button-cart {
+    display: inline-block;    
+    background-color: #1e6f29;     
+    color: #f0fdf4; 
+    font-weight: bolder;
+    text-align: center;
+    
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+   
+
+}
+.action-button-cart:hover {
+    background-color: #174f1f; 
+    transform: scale(1.05); 
+}
+
+
+.controlPannel {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px; 
+    width: 800px; 
+    text-align: left; 
+}
+
+.controlPannel h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.controlPannel label {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label.required::after {
+    content: "*"; 
+    color: rgb(206, 43, 43);   
+    margin-left: 1px; 
+}
+
+
+.controlPannel input, .controlPannel textarea, .controlPannel select {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.orderCard {
+    border: 2px solid black; 
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 10px;
+    background-color:rgba(0, 255, 64, 0.2); 
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif; 
+}
+
+.columnDiv {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px;
+    padding: 20px;  
+
+    
+}
+
+.tableStyle {
+    width: 100%;
+    margin: 20px auto; 
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tableStyle th {
+    background-color: #1B5E20;
+    color: white; 
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center; 
+}
+
+.tableStyle td {
+    background-color: #E0F2F1; 
+    color: #1B5E20; 
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center; 
+}
+
+.tableStyle tr:nth-child(even) td {
+    background-color: #B2DFDB; 
+}
+
+.tableStyle tr:hover td {
+    background-color: #81C784; 
+}
+
+.tableStyle caption {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #1B5E20; 
+    text-align: center;
+}
+
+.buttonDiv {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+    justify-content: flex-end;   
+}
+
+@media (max-width: 800px) {
+    .button-container, .buttonDiv{
+        flex-direction: column;
+    }
+    .controlPannel{
+        width: 400px;
+    }
+    .columnDiv {
+        grid-template-columns: 1fr; 
+    }
+   
+       
+
+}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Healthy life</title>   
+
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/popup.css">
+    <link rel="stylesheet" href="css/adminPanel.css">
+
+    <script src="js/cookies.js" defer></script>  
+    <script src="js/APIcoms.js" defer></script>
+    <script src="js/add_Image.js" defer></script>  
+    <script src="js/admin_products.js" defer></script>
+    <script src="js/admin_order.js" defer></script>
+    <script src="js/admin.js" defer></script>
+    <script src="js/login.js" defer></script>  
+
+
+</head>
+<body>
+    <div class="nav-div">
+        <nav class="nav-left">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li>
+                    <a href="#">Shop</a>
+                    <ul>
+                        <li><a href="/shop_page.html">Healthy Products</a></li>
+                        <li><a href="/#">Diet Plans</a></li>
+                        <li><a href="/#">Sports Plans</a></li>
+                    </ul>
+                </li>   
+                <li id="show-calculator"><a href="#">Calculator</a></li>             
+                <li id="show-about"><a href="#">About us</a></li>                
+                <li id="show-lang">
+                    <a href="#">Languages</a>
+                    <ul>
+                        <li><a href="#">English</a></li>
+                        <li><a href="#">Lietuvių</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-right">
+            <ul style="justify-content: flex-end;">    
+                <li><a href="cart_page.html" style="font-weight: bold;"> 🛒 </a></li>
+                <li class="hamburger-menu">
+                    <a href="#" style="font-weight: bold;">☰</a>
+                    <ul>
+                        <li onclick="openSignIn()">     <a id="signInButton"> Sign in</a></li> 
+                        <li>                        <a href="#">Favourites</a></li>
+                        <li id="hide-settings">     <a href="#">Settings</a></li> 
+                        <li id="hide-admin">        <a href="#">Admin panel</a></li>
+                        <li id="hide-employee">     <a href="/admin.html">Employee panel</a></li>
+                        <li id="hide-about">        <a href="#">About us</a></li> 
+                        <li id="hide-calculator">   <a href="#">Calculator</a></li>                    
+                        <li id="hide-lang">         <a href="#">Languages</a></li> 
+                        <li>                        <a href="#">Help center</a></li>
+
+                    </ul>
+                </li>                
+            </ul>            
+        </nav>
+    </div>
+    
+
+    <div class="hero" style="height:1000px">
+        <img src="img/heroImage.webp" 
+             alt="Healthy food on a cutting board with vegetables and meat" 
+             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+
+            <div class="center-content">  
+
+                <div class="main-section">                  
+                    <div class="button-container">
+                        <button class="action-button" onclick="showModifyProducts()">Modify Products</button>                       
+                        <button class="action-button" onclick="showModifyUsers()">Modify User</button>
+                        <button class="action-button" onclick="showModifyFootItems()">Modify FoodItems</button>
+                        <button class="action-button" onclick="showCheckOrders()">Check Orders</button>
+                    </div>              
+<!--    PRODUCT PANEL     -->          
+                    <div id="product-controlPannel" class="controlPannel">
+
+                        <h1 id="header">Create Product</h1>
+
+                        <div>                               
+                            <input id="hiddenIDInput" type="hidden" />
+                        </div>
+                    
+                        <div>
+                            <label>Product name:</label>
+                            <input id="productName" placeholder="Enter product name here" />
+                        </div>
+                    
+                        <div>
+                            <label>Product description:</label>
+                            <textarea id="productDescription" placeholder="Enter product description here"></textarea>
+                        </div>
+                    
+                        <div>
+                            <label>Product price:</label>
+                            <input id="productPrice" type="number" placeholder="Enter product price here" />
+                        </div>
+                    
+                        <div>
+                            <label>Product category:</label>
+                            <input id="productCategory" placeholder="Enter product category here" />
+                        </div> 
+                    
+                        <div class="imgUploadDiv">
+                            <input id="hiddenIDInput" type="hidden" />
+                            <input id="imageInput" type="file" accept="image/*" />
+                            <input id="hiddenInput" type="hidden" />
+                            <button class = "action-button" id="uploadButton" onclick="uploadButtonClicked()">Upload image</button>
+                            <label id="imgLabel">No file selected.</label>
+                        </div>
+                    
+                        <div class="buttonDiv">  
+                            <button class = "action-button"  onclick="getProduct()">Get Product</button>   
+                            <button class = "action-button"  onclick="deleteProduct()">Delete Product</button> 
+                            <button class = "action-button"  onclick="updateProduct()">Update Product</button> 
+                            <button class = "action-button"  onclick="uploadProduct()">Create Product</button>
+                        </div>
+                    
+                        <div>
+                            <p></p>
+                            <label id="productMessage"></label>
+                        </div>
+                    </div>  
+<!--    USER PANEL     -->         
+                    <div id="user-controlPannel" class="controlPannel">
+
+                    </div>
+<!--    FOOD PANEL     -->         
+                    <div id="modifyFood-controlPannel" class="controlPannel">
+
+                    </div>
+<!--    ORDER PANEL     -->         
+                    <div id="order-controlPannel" class="controlPannel">
+                        <div>                                                  
+                            <select id="orderstatus">
+                                <option value="PENDING">-- Choose order status --</option>
+                                <option value="PENDING">Pending</option>
+                                <option value="COMPLETED">Completed</option>
+                                <option value="FAILED">Failed</option>
+                                <option value="PAID">Paid</option>
+                                <option value="CANCELLED">Cancelled</option> 
+                                <option value="REFUNDED">Refunded</option>                                  
+                            </select>                                                
+                        </div>
+                        <div class="buttonDiv"> 
+                            <button class = "action-button"  onclick="getOrders()">Get Orders</button>
+                        </div> 
+                        <div>
+                            <p></p>
+                            <label id="orderMessage"></label>
+                        </div>
+
+                        <div id="order-Div"> 
+                            
+                        </div>
+
+
+                        
+                        
+                    </div>
+                    
+                    
+
+
+
+
+
+
+
+                    
+                </div>
+    </div>
+
+
+    
+
+
+
+
+
+
+
+</body>
+</html>

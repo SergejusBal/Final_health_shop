@@ -62,14 +62,14 @@ public class NoFilterController {
     }
 
 
-    @Autowired
-    private DateRegistrationRepository dateRegistrationRepository;
+//    @Autowired
+//    private DateRegistrationRepository dateRegistrationRepository;
 
-    @GetMapping("/test/{startDate}/{endDate}/{webKey}")
-    public ResponseEntity<List<LocalDateTime>> getTest(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable String webKey) {
-        List<LocalDateTime> localDateTimeList = dateRegistrationRepository.getTimeSlotsWithinDateRange(startDate,endDate,webKey);
-        return new ResponseEntity(localDateTimeList,HttpStatus.OK);
-    }
+//    @GetMapping("/test/{startDate}/{endDate}/{webKey}")
+//    public ResponseEntity<List<LocalDateTime>> getTest(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable String webKey) {
+//        List<LocalDateTime> localDateTimeList = dateRegistrationRepository.getTimeSlotsWithinDateRange(startDate,endDate,webKey);
+//        return new ResponseEntity(localDateTimeList,HttpStatus.OK);
+//    }
 
 
 
