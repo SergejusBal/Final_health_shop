@@ -23,6 +23,7 @@ public class FilterIPCounter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         String ipAddress = servletRequest.getRemoteAddr();
+        System.out.println(ipAddress);
         rabbitMQIP.sendObjectToQueue(ipAddress, "IP");
         filterChain.doFilter(servletRequest, servletResponse);
     }

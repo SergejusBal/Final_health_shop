@@ -32,6 +32,7 @@ public class UtilitiesGeneral {
             Map.entry("User or specialization not found", HttpStatus.NOT_FOUND),
             Map.entry("User subscription not found", HttpStatus.NOT_FOUND),
             Map.entry("User or subscription not found", HttpStatus.NOT_FOUND),
+            Map.entry("User profile not found", HttpStatus.NOT_FOUND),
             Map.entry("User was successfully added", HttpStatus.OK),
             Map.entry("User was deleted", HttpStatus.OK),
             Map.entry("User subscription was deleted", HttpStatus.OK),
@@ -42,6 +43,8 @@ public class UtilitiesGeneral {
             Map.entry("User subscription was added", HttpStatus.OK),
             Map.entry("User privilege was added", HttpStatus.OK),
             Map.entry("User specialization was added", HttpStatus.OK),
+            Map.entry("User profile was modified", HttpStatus.OK),
+
 
             Map.entry("Fail to add product", HttpStatus.BAD_REQUEST),
             Map.entry("Product not found", HttpStatus.NOT_FOUND),

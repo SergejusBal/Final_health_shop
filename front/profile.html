@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Healthy life</title>   
+
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/popup.css">
+    <link rel="stylesheet" href="css/profile.css">
+
+    <script src="js/cookies.js" defer></script>  
+    <script src="js/APIcoms.js" defer></script>  
+    <script src="js/login.js" defer></script> 
+    <script src="js/profile.js" defer></script>   
+
+</head>
+<body>
+    <div class="nav-div">
+        <nav class="nav-left">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li>
+                    <a href="#">Shop</a>
+                    <ul>
+                        <li><a href="/shop_page.html">Healthy Products</a></li>
+                        <li><a href="/celandar_page.html">Diet Plans</a></li>                        
+                    </ul>
+                </li>   
+                <li id="show-calculator"><a href="/calculator_page.html">Calculator</a></li>             
+                <li id="show-about"><a href="/aboutus.html">About us</a></li>                
+                <li id="show-lang">
+                    <a href="#">Languages</a>
+                    <ul>
+                        <li><a href="#">English</a></li>
+                        <li><a href="#">Lietuvių</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-right">
+            <ul style="justify-content: flex-end;">    
+                <li><a href="cart_page.html" style="font-weight: bold;"> 🛒 </a></li>
+                <li class="hamburger-menu">
+                    <a href="#" style="font-weight: bold;">☰</a>
+                    <ul>
+                        <li onclick="openSignIn()">     <a id="signInButton"> Sign in</a></li>                        
+                        <li id="hide-settings">     <a href="/profile.html">Profile</a></li> 
+                        <li id="hide-admin">        <a href="/admin.html">Admin panel</a></li>
+                        <li id="hide-employee">     <a href="/employee_page.html">Employee panel</a></li>
+                        <li id="hide-about">        <a href="/aboutus.html">About us</a></li> 
+                        <li id="hide-calculator">   <a href="/calculator_page.html">Calculator</a></li>                    
+                        <li id="hide-lang">         <a href="#">Languages</a></li> 
+                        <li>                        <a href="mailto:sergejus.balciunas@gmail.com">Help center</a></li>
+
+                    </ul>
+                </li>                
+            </ul>            
+        </nav>
+
+    </div>
+
+    <div class="hero">      
+
+        <div class="center-content">  
+
+            <div class="main-section">  
+
+                <div class = "controlPannel">
+                    <h1>Profile</h1>
+
+                    <div class="columnDiv">
+                        <div>
+                            <label for="uuid">UUID:</label>
+                            <input id="userUUID" name="uuid" type="text" disabled/>
+                        </div>
+                        <div>
+                            <label for="email">Email:</label>
+                            <input id="email" name="email" type="email" disabled/>
+                        </div>
+                        <div>
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input id="phoneNumber" name="phoneNumber" type="tel" placeholder="Enter phone number" />
+                        </div>
+                        <div>
+                            <label for="address">Address:</label>
+                            <input id="address" name="address" type="text" placeholder="Enter address" />
+                        </div>
+                        <div>
+                            <label for="firstName">First Name:</label>
+                            <input id="firstName" name="firstName" type="text" placeholder="Enter first name" />
+                        </div>
+                        <div>
+                            <label for="lastName">Last Name:</label>
+                            <input id="lastName" name="lastName" type="text" placeholder="Enter last name" />
+                        </div>
+                        <div>
+                            <label for="dateOfBirth">Date of Birth:</label>
+                            <input id="dateOfBirth" name="dateOfBirth" type="date" placeholder="Select date of birth" />
+                        </div>
+                        <div>
+                            <label for="height">Height (in cm):</label>
+                            <input id="height" name="height" type="number" step="0.01" placeholder="Enter height in cm" />
+                        </div>
+                        <div>
+                            <label for="weight">Weight (in kg):</label>
+                            <input id="weight" name="weight" type="number" step="0.01" placeholder="Enter weight in kg" />
+                        </div>            
+
+                    </div>
+                    <div class="buttonDiv">                          
+                        <button id="updateProfileButton" class="action-button" onclick="updateYourProfile()">Update</button>
+                    </div>   
+                    <div>
+                        <p></p>
+                        <label id="profileMessage"></label>
+                    </div>
+
+
+                </div>
+                    
+            <div>       
+                      
+        </div>
+    </div>
+
+
+    <div id="SignInpopup" class="popup">
+        <div class="popup-content">
+            <span class="close-popup-button" onclick="closeSignIn()">&times;</span>
+            <h2>Sign In</h2>
+            <form>
+
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="username" required>               
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="password" required>                
+                
+                <button type="button" onclick="signIn()">Sign In</button>
+                <button type="button" onclick="register()">Register</button>
+
+                <p id="signIn_message"> </p>
+            </form>
+    </div>
+
+
+</body>
+</html>

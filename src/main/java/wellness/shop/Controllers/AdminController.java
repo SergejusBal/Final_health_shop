@@ -1,6 +1,7 @@
 package wellness.shop.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,12 +9,12 @@ import wellness.shop.Models.Users.Enums.Privileges;
 import wellness.shop.Models.Users.Enums.Role;
 import wellness.shop.Models.Users.Enums.Specialization;
 import wellness.shop.Models.Users.Guest;
+import wellness.shop.Models.Users.User;
 import wellness.shop.Security.JWT;
 import wellness.shop.Services.UserService;
 import wellness.shop.Utilities.UtilitiesGeneral;
 
 @RestController
-//@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:5500","http://localhost:7778/","http://127.0.0.1:7778/"})
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -22,6 +23,20 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+
+    @GetMapping("/get/user/{username}")
+    public ResponseEntity<User> getUser(@PathVariable String username, @RequestHeader("Authorization") String authorizationHeader) {
+
+        User user = userService.getUserInfo(username, authorizationHeader);
+
+        if (user == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        else if (user.getID() == 0) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        else{
+            user.setPassword(null);
+            return new ResponseEntity<>(user ,HttpStatus.OK);
+        }
+    }
 
     @DeleteMapping("/delete/user/{username}")
     public ResponseEntity<String> deleteUser(@PathVariable String username, @RequestHeader("Authorization") String authorizationHeader) {

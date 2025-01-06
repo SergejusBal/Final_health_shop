@@ -143,6 +143,11 @@ public class FilterConfig {
         return createFilter("/stripe/*", allowedGuestRoles);
     }
 
+    @Bean
+    public FilterRegistrationBean<RoleFilter> addCalendarControllerFilter() {
+        return createFilter("/date/*", allowedUserRoles);
+    }
+
     private FilterRegistrationBean<RoleFilter> createFilter(String urlPattern, Role[] allowedRoles) {
         FilterRegistrationBean<RoleFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new RoleFilter(jwt, allowedRoles));

@@ -10,7 +10,6 @@ import wellness.shop.Services.FoodService;
 import wellness.shop.Utilities.UtilitiesGeneral;
 
 @RestController
-//@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:5500","http://localhost:7778/","http://127.0.0.1:7778/"})
 @RequestMapping("/food")
 public class FoodController {
     @Autowired

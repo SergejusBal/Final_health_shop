@@ -5,9 +5,11 @@ html body {
     padding: 0;    
     height: 100%;
     width: 100%;
-    background: linear-gradient(to bottom, #769935, #ffffff);
+    background: url('/img/heroImage.webp') no-repeat center center fixed;
     background-attachment: fixed;
+    background-size: cover;
     min-width: 320px; 
+   
 }
 
 

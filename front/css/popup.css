@@ -53,6 +53,7 @@
     padding: 10px 20px;
     background-color: #1e6f29; 
     color: #f0fdf4;    
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
     border-radius: 5px;
     font-size: 16px;
     margin-top: 10px;
@@ -62,6 +63,7 @@
 .popup-content form button:hover {
     background-color: #174f1f; 
     transform: scale(1.05); 
+    cursor: pointer;
 }
 
 .close-popup-button {

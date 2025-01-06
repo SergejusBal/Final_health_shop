@@ -168,7 +168,8 @@ async function addProductToCart(id, price, category,productName) {
     
     let productIndex = findProductIndex(tempCart, id);
 
-    if (productIndex !== -1) {        
+    if (productIndex !== -1) {      
+        if (category === "Service") return;
         tempCart[productIndex].quantity++;
     } else {        
         tempCart.push({

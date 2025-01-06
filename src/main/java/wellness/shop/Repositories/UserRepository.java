@@ -7,9 +7,9 @@ import wellness.shop.Models.Users.*;
 import wellness.shop.Models.Users.Enums.Privileges;
 import wellness.shop.Models.Users.Enums.Role;
 import wellness.shop.Models.Users.Enums.Specialization;
-import wellness.shop.Utilities.UtilitiesGeneral;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class UserRepository{
     private String password;
 
 
-    public String registerUser(Guest user) {
+    public String registerUser(Guest user, String newUserUUID) {
 
         if(user.getUsername() == null || user.getPassword() == null) return "Invalid data";
 
@@ -36,7 +36,7 @@ public class UserRepository{
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString(1, UtilitiesGeneral.generateUID().toString());
+            preparedStatement.setString(1, newUserUUID);
             preparedStatement.setString(2, user.getUsername());
             preparedStatement.setString(3, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
             preparedStatement.setString(4, Role.REGULAR.name());
@@ -80,9 +80,9 @@ public class UserRepository{
 
     public User getUserInfo(String userName){
 
-        User user = null;
+        User user;
 
-        if(userName == null) return null;
+        if(userName == null) return new Guest();
 
         String sql = "SELECT * FROM users WHERE username = ?";
 
@@ -92,13 +92,13 @@ public class UserRepository{
             preparedStatement.setString(1,userName);
             ResultSet resultSet =  preparedStatement.executeQuery();
 
-            if(!resultSet.next()) return null;
+            if(!resultSet.next()) return new Guest();
 
             user = createUser(resultSet);
 
         }catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
-            return null;
+            return new Guest();
         }
 
         return user;
@@ -411,7 +411,7 @@ public class UserRepository{
             ResultSet resultSet =  preparedStatement.executeQuery();
 
             while(resultSet.next()){
-                specialization.add(Specialization.valueOf(resultSet.getString("privilege")));
+                specialization.add(Specialization.valueOf(resultSet.getString("specialization")));
             }
 
 
@@ -521,6 +521,7 @@ public class UserRepository{
         deleteSubscription(uuid);
         deleteSpecialization(uuid);
         deletePrivilege(uuid);
+        deleteProfile(uuid);
 
         String sql = "DELETE FROM users WHERE uuid = ?";
 
@@ -544,7 +545,7 @@ public class UserRepository{
     private User createUser(ResultSet resultSet) throws SQLException {
 
         User user = null;
-
+        int id = resultSet.getInt("id");
         String uuid = resultSet.getString("uuid");
         String username = resultSet.getString("username");
         String hashedPassword = resultSet.getString("password");
@@ -571,6 +572,7 @@ public class UserRepository{
                 break;
         }
 
+        user.setID(id);
         user.setUUID(uuid);
         user.setUsername(username);
         user.setPassword(hashedPassword);
@@ -579,6 +581,128 @@ public class UserRepository{
         return user;
 
     }
+
+
+    public void createUserProfile(String newUserUUID, String email) {
+
+        if (newUserUUID == null || email == null) {
+            return;
+        }
+
+        String sql = "INSERT INTO user_profiles (uuid, email) VALUES (?, ?);";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, newUserUUID);
+            preparedStatement.setString(2, email);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+    }
+
+    public Profile getProfileFromUUID(String uuid) {
+
+        Profile profile;
+
+        if (uuid == null) return new Profile();
+
+        String sql = "SELECT * FROM user_profiles WHERE uuid = ?";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, uuid);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) return new Profile();
+
+            profile = new Profile();
+            profile.setID(resultSet.getInt("id"));
+            profile.setUserUUID(resultSet.getString("uuid"));
+            profile.setEmail(resultSet.getString("email"));
+            profile.setPhoneNumber(resultSet.getString("phonenumber"));
+            profile.setAddress(resultSet.getString("address"));
+            profile.setFirstName(resultSet.getString("firstname"));
+            profile.setLastName(resultSet.getString("lastname"));
+
+            String dateOfBirth = resultSet.getString("dateofbirth");
+
+            if(dateOfBirth == null){
+                profile.setDateOfBirth(null);
+            }
+            else {
+                LocalDate localDate = LocalDate.parse(dateOfBirth);
+                profile.setDateOfBirth(localDate);
+            }
+
+            profile.setHeight(resultSet.getDouble("height"));
+            profile.setWeight(resultSet.getDouble("weight"));
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return new Profile();
+        }
+
+        return profile;
+    }
+
+    public boolean updateProfile(Profile profile) {
+
+        if (profile.getUserUUID() == null || profile.getEmail() == null) {
+            return false;
+        }
+
+        String sql = "UPDATE user_profiles SET phonenumber = ?, address = ?, firstname = ?, lastname = ?, dateofbirth = ?, height = ?, weight = ? " +
+                "WHERE uuid = ? AND email = ?";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, profile.getPhoneNumber());
+            preparedStatement.setString(2, profile.getAddress());
+            preparedStatement.setString(3, profile.getFirstName());
+            preparedStatement.setString(4, profile.getLastName());
+            preparedStatement.setString(5, profile.getDateOfBirth().toString());
+            preparedStatement.setDouble(6, profile.getHeight());
+            preparedStatement.setDouble(7, profile.getWeight());
+            preparedStatement.setString(8, profile.getUserUUID());
+            preparedStatement.setString(9, profile.getEmail());
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return false;
+        }
+
+    }
+
+    public void deleteProfile(String uuid) {
+
+        if (uuid == null) return;
+
+        String sql = "DELETE FROM user_profiles WHERE uuid = ?";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, uuid);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+    }
+
+
+
 
 
 

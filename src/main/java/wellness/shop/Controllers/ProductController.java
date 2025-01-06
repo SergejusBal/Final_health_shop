@@ -9,10 +9,10 @@ import wellness.shop.Models.Users.Guest;
 import wellness.shop.Services.ProductService;
 import wellness.shop.Utilities.UtilitiesGeneral;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:5500","http://localhost:7778/","http://127.0.0.1:7778/"})
 @RequestMapping("/product")
 public class ProductController {
 
@@ -23,6 +23,15 @@ public class ProductController {
     @GetMapping("/public/{productID}")
     public ResponseEntity<Product> getProductById(@PathVariable int productID) {
         Product product = productService.getProductById(productID);
+
+        if (product != null) return new ResponseEntity<>(product, HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/public/precise/{productName}")
+    public ResponseEntity<Product> getProductsByNamePrecise(@PathVariable String productName) {
+
+        Product product = productService.getProductsByNamePrecise(productName);
 
         if (product != null) return new ResponseEntity<>(product, HttpStatus.OK);
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -45,6 +54,17 @@ public class ProductController {
         if (!products.isEmpty()) return new ResponseEntity<>(products, HttpStatus.OK);
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/public/get/weSockets")
+    public ResponseEntity<HashMap<String,String>> getWebSocketToProductMap() {
+
+        HashMap<String,String> map = productService.getWebsocketToProductMap();
+
+        if (!map.isEmpty()) return new ResponseEntity<>(map, HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
 
     @GetMapping("/public/id/name/{productName}")
     public ResponseEntity<Integer> getProductIdByName(@PathVariable String productName) {

@@ -138,7 +138,7 @@ public class StripeService {
             String category = item.getCategory();
 
             if (category.equals("Service")) {
-                productService.registerDietServiceInternal(orderID,item.getProductId());
+                orderService.registerDietServiceInternal(orderID,item.getProductId());
             }
             totalPrice = totalPrice.add(price);
         }
@@ -164,6 +164,7 @@ public class StripeService {
 
         if (secretUUID != null && stripeRepository.checkIfPaymentValid(paymentID,userUUID,secretUUID)) {
             orderService.setPaymentStatusInternal(orderID,PaymentStatus.PAID);
+            orderService.setPaymentDietServicePaymentStatus(orderID,PaymentStatus.PAID);
             String refundKey = UtilitiesGeneral.generateUID().toString();
             stripeRepository.setRefundKey(paymentID,refundKey);
             //<---------------- if needed here later will add promo code count

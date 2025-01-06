@@ -48,7 +48,7 @@ public class OrderService {
 
     public String setPaymentStatus(int orderID, PaymentStatus paymentStatus, String authorizationHeader){
         if (!userService.isAuthorized(authorizationHeader, Privileges.MODIFY_PRODUCTS)) {
-            return null;
+            return "No authorization";
         }
        return orderRepository.setPaymentStatus(orderID, paymentStatus) ? "Order paymentStatus was modified":"Order paymentStatus not found";
     }
@@ -66,8 +66,16 @@ public class OrderService {
         orderRepository.setPaymentStatus(orderID, paymentStatus);
     }
 
+    public void setPaymentDietServicePaymentStatus(int orderID, PaymentStatus paymentStatus){
+        orderRepository.setPaymentDietServicePaymentStatus(orderID, paymentStatus);
+    }
+
     public PaymentStatus getPaymentStatusInternal(int orderID){
         return orderRepository.getPaymentStatus(orderID);
+    }
+
+    public boolean registerDietServiceInternal(int orderID, int productID) {
+        return orderRepository.registerDietService(orderID, productID);
     }
 
     public String getUsedPromoInternal(int orderID){

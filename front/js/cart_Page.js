@@ -42,7 +42,7 @@ async function populateShoppingTable() {
         let total = (product.price * product.quantity).toFixed(2);
         
         cellIndex.textContent = i + 1; 
-        cellName.textContent = product.name + " " + product.productId;
+        cellName.textContent = product.name;
         cellTax.textContent = tax;
         cellPrice.textContent = product.price.toFixed(2);
 
@@ -120,7 +120,7 @@ async function modifyCartIncreaseQuantity(id) {
    
     let productIndex = findProductIndex(tempCart, id);
 
-    if (productIndex !== -1) {        
+    if (productIndex !== -1 && category !== "Service") {        
         tempCart[productIndex].quantity++;
     }
     
@@ -160,6 +160,17 @@ function findProductIndex(cart, productId) {
 
 
 async function checkOut(){
+
+    let cookieValue = await getCookie("productCart");
+
+    let productCart = cookieValue ? JSON.parse(cookieValue) : [];
+
+    let totalPrice = calculateTotalPrice(productCart);
+
+    if(totalPrice <= 0)  {
+        document.getElementById('cartMessage').textContent = "Cart is empty!";   
+        return;
+    }
 
     let orderID = await createOrder();
     if (orderID == 0 || !orderID) return;
@@ -242,20 +253,3 @@ async function fillOrderDetails(){
 }
 
 
-function getUserUUID() {
-
-    let jwToken = getCookie("jwToken");
-
-    if (!jwToken) {
-        console.error("No JWT token found.");
-        return null;
-    }
-
-    try {
-        const claims = parseJwt(jwToken);
-        return claims.userUUID || null;
-    } catch (error) {
-        console.error("JWT parse error:", error);
-        return null;
-    }
-}

@@ -1,0 +1,93 @@
+
+.center-content {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.main-section {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.controlPannel {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px; 
+    width: 1200px; 
+    text-align: left; 
+}
+
+.controlPannel h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.controlPannel label {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.controlPannel input, .controlPannel textarea, .controlPannel select {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.columnDiv {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px;
+    padding: 20px;     
+}
+.columnDiv div{
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.columnDiv img {
+    width: 400px ;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;     
+    border-radius: 25px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.3);
+
+}
+
+.paragraf {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 18px;    
+    line-height: 1.6;  
+    padding-top: 15px;  
+    margin: 0px;
+    color: #ffffff; 
+    text-align:justify;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+}
+
+
+
+@media (max-width: 800px) {
+
+    .columnDiv {
+        grid-template-columns: 1fr; 
+    }  
+    .controlPannel {       
+        width: 400px; 
+    }
+  
+
+}

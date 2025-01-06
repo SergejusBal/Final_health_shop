@@ -86,6 +86,10 @@ public class FoodService {
             return "No authorization";
         }
 
+        try {
+            redis.putWithSerialize("$&food&$"+foodItem.getFood(),foodItem, 600);
+        } catch (IOException ignore) {}
+
         return handleUserAction(
                 () -> {
                     return foodRepository.updateFoodItemByFoodName(foodItem);
@@ -100,6 +104,8 @@ public class FoodService {
         if (!userService.isAuthorized(authorizationHeader, Privileges.MODIFY_FOOD_ITEMS)) {
             return "No authorization";
         }
+
+        redis.delete("$&food&$"+foodName);
 
         return handleUserAction(
                 () -> {

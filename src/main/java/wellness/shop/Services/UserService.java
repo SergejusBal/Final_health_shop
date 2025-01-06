@@ -9,6 +9,7 @@ import wellness.shop.Models.Users.Enums.Privileges;
 import wellness.shop.Models.Users.Enums.Role;
 import wellness.shop.Models.Users.Enums.Specialization;
 import wellness.shop.Models.Users.Guest;
+import wellness.shop.Models.Users.Profile;
 import wellness.shop.Models.Users.User;
 import wellness.shop.Repositories.UserRepository;
 import wellness.shop.Security.JWT;
@@ -37,8 +38,19 @@ public class UserService {
     public String registerUser(Guest user) {
 
         if(!UtilitiesGeneral.isValidEmail(user.getUsername()))  return "Invalid data";
+        String newUserUUID = UtilitiesGeneral.generateUID().toString();
+        String databaseResponse = userRepository.registerUser(user,newUserUUID);
+        userRepository.createUserProfile(newUserUUID,user.getUsername());
+        return databaseResponse;
+    }
 
-        return userRepository.registerUser(user);
+    public User getUserInfo(String userName, String authorizationHeader) {
+
+        if (!isAuthorized(authorizationHeader, Privileges.MODIFY_USERS)) {
+            return null;
+        }
+
+        return userRepository.getUserInfo(userName);
     }
 
 
@@ -58,6 +70,29 @@ public class UserService {
         response.put("status","No authorization");
 
         return response;
+    }
+
+
+    public Profile getProfile(String profileUserUUI, String authorizationHeader) {
+
+        String userUUID = jwt.getUUID(authorizationHeader);
+        Role[] allowedEmployeeRoles = {Role.ADMIN, Role.EMPLOYEE};
+
+        if (userUUID == null || !(userUUID.equals(profileUserUUI)  ||  jwt.checkRolesAndValidateToken(authorizationHeader,allowedEmployeeRoles))) {
+            return null;
+        }
+
+        return userRepository.getProfileFromUUID(profileUserUUI);
+    }
+
+    public String updateProfile(Profile profile, String authorizationHeader) {
+        String userUUID = jwt.getUUID(authorizationHeader);
+
+        if (userUUID == null || !userUUID.equals(profile.getUserUUID())) {
+            return "No authorization";
+        }
+
+        return userRepository.updateProfile(profile) ? "User profile was modified" : "User profile not found" ;
     }
 
     public String deleteUser(String username, String authorizationHeader) {
