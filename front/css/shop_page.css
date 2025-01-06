@@ -4,6 +4,7 @@
     left: 50%;
     transform: translate(-50%, 0);
     color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
     text-align: center;
     background-color: rgba(0, 0, 0, 0.5); 
     padding: 20px;
@@ -12,6 +13,8 @@
 
 .main-section {
     width: 100%;
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
 }
 
@@ -22,11 +25,23 @@
     margin-bottom: 20px;
 }
 
+.paragraf{
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 18px;    
+    line-height: 1.6;  
+    padding-top: 15px;  
+    margin: 0px;
+    color: #ffffff; 
+    text-align:justify;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+}
+
 .action-button {
     display: inline-block;
     padding: 10px 20px;
     background-color: #1e6f29; 
     color: #f0fdf4;    
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
     border-radius: 5px;
     font-size: 16px;
     margin-top: 10px;
@@ -36,6 +51,7 @@
 .action-button:hover {
     background-color: #174f1f; 
     transform: scale(1.05); 
+    cursor: pointer;
 }
 
 .controlPannel {
@@ -44,6 +60,7 @@
     padding: 20px 30px; 
     width: 800px; 
     text-align: left; 
+    align-self: center;
 }
 
 .controlPannel h1 {
@@ -114,7 +131,7 @@
     text-align:justify;
     padding: 10px; 
     box-sizing: border-box;    
-    color: rgb(5, 44, 11);
+    color: rgb(160, 255, 175);
     font-size: 20px; 
 }
 
@@ -123,7 +140,7 @@
     justify-content: left; 
     text-align:justify;    
     box-sizing: border-box;    
-    color: rgb(5, 44, 11);
+    color: rgb(28, 221, 57);
     font-size: 16px; 
     font-weight:700;
 }

@@ -18,8 +18,10 @@
     <script src="js/add_Image.js" defer></script>  
     <script src="js/admin_products.js" defer></script>
     <script src="js/admin_order.js" defer></script>
+    <script src="js/admin_user.js" defer></script>
     <script src="js/admin.js" defer></script>
     <script src="js/login.js" defer></script>  
+    <script src="js/admin_food.js" defer></script> 
 
 
 </head>
@@ -32,12 +34,11 @@
                     <a href="#">Shop</a>
                     <ul>
                         <li><a href="/shop_page.html">Healthy Products</a></li>
-                        <li><a href="/#">Diet Plans</a></li>
-                        <li><a href="/#">Sports Plans</a></li>
+                        <li><a href="/celandar_page.html">Diet Plans</a></li>                       
                     </ul>
                 </li>   
-                <li id="show-calculator"><a href="#">Calculator</a></li>             
-                <li id="show-about"><a href="#">About us</a></li>                
+                <li id="show-calculator"><a href="/calculator_page.html">Calculator</a></li>             
+                <li id="show-about"><a href="/aboutus.html">About us</a></li>                
                 <li id="show-lang">
                     <a href="#">Languages</a>
                     <ul>
@@ -54,15 +55,14 @@
                 <li class="hamburger-menu">
                     <a href="#" style="font-weight: bold;">☰</a>
                     <ul>
-                        <li onclick="openSignIn()">     <a id="signInButton"> Sign in</a></li> 
-                        <li>                        <a href="#">Favourites</a></li>
-                        <li id="hide-settings">     <a href="#">Settings</a></li> 
-                        <li id="hide-admin">        <a href="#">Admin panel</a></li>
-                        <li id="hide-employee">     <a href="/admin.html">Employee panel</a></li>
-                        <li id="hide-about">        <a href="#">About us</a></li> 
-                        <li id="hide-calculator">   <a href="#">Calculator</a></li>                    
+                        <li onclick="openSignIn()">     <a id="signInButton"> Sign in</a></li>                       
+                        <li id="hide-settings">     <a href="/profile.html">Profile</a></li> 
+                        <li id="hide-admin">        <a href="/admin.html">Admin panel</a></li>
+                        <li id="hide-employee">     <a href="/employee_page.html">Employee panel</a></li>
+                        <li id="hide-about">        <a href="/aboutus.html">About us</a></li> 
+                        <li id="hide-calculator">   <a href="/calculator_page.html">Calculator</a></li>                    
                         <li id="hide-lang">         <a href="#">Languages</a></li> 
-                        <li>                        <a href="#">Help center</a></li>
+                        <li>                        <a href="mailto:sergejus.balciunas@gmail.com">Help center</a></li>
 
                     </ul>
                 </li>                
@@ -71,10 +71,7 @@
     </div>
     
 
-    <div class="hero" style="height:1000px">
-        <img src="img/heroImage.webp" 
-             alt="Healthy food on a cutting board with vegetables and meat" 
-             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+    <div class="hero">   
 
             <div class="center-content">  
 
@@ -82,7 +79,7 @@
                     <div class="button-container">
                         <button class="action-button" onclick="showModifyProducts()">Modify Products</button>                       
                         <button class="action-button" onclick="showModifyUsers()">Modify User</button>
-                        <button class="action-button" onclick="showModifyFootItems()">Modify FoodItems</button>
+                        <button class="action-button" onclick="showModifyFootItems()">Modify Food Items</button>
                         <button class="action-button" onclick="showCheckOrders()">Check Orders</button>
                     </div>              
 <!--    PRODUCT PANEL     -->          
@@ -97,6 +94,10 @@
                         <div>
                             <label>Product name:</label>
                             <input id="productName" placeholder="Enter product name here" />
+                        </div>
+                        <div>
+                            <label>Service provider (optinal):</label>
+                            <input id="serviceProvider" placeholder="Enter service provider name" />
                         </div>
                     
                         <div>
@@ -122,13 +123,14 @@
                             <label id="imgLabel">No file selected.</label>
                         </div>
                     
-                        <div class="buttonDiv">  
-                            <button class = "action-button"  onclick="getProduct()">Get Product</button>   
-                            <button class = "action-button"  onclick="deleteProduct()">Delete Product</button> 
-                            <button class = "action-button"  onclick="updateProduct()">Update Product</button> 
+                        <div class="buttonDiv">                             
+                            <button class = "action-button"  style="background-color:rgb(139, 0, 0)" onclick="deleteProduct()">Delete</button> 
+                            <button class = "action-button"  style="background-color:rgb(139, 125, 0)" onclick="uploadService()">Create Service</button>                                                      
                             <button class = "action-button"  onclick="uploadProduct()">Create Product</button>
+                            <button class = "action-button"  onclick="updateProduct()">Update</button> 
+                            <button class = "action-button"  onclick="getProduct()">Get</button>   
                         </div>
-                    
+                        
                         <div>
                             <p></p>
                             <label id="productMessage"></label>
@@ -136,10 +138,138 @@
                     </div>  
 <!--    USER PANEL     -->         
                     <div id="user-controlPannel" class="controlPannel">
+                        <div>
+                            <label>Username:</label>
+                            <input id="usernameInput" placeholder="Enter username here" />
+                        </div>                         
+
+                        <div class="buttonDiv"> 
+                            <button class = "action-button"  onclick="getUser()">Get User</button>
+                        </div> 
+                        
+                        <div class="columnDiv">
+                            <div>
+                                <div>
+                                    <label>Username</label>
+                                    <input id="fetchUsername" disabled />
+                                </div> 
+                                <div>
+                                    <label>User UUID:</label>
+                                    <input id="fetchUUID" disabled />
+                                </div> 
+                                <div>
+                                    <label>User role</label>
+                                    <input id="fetchRole" disabled />
+                                </div> 
+                                <div class="buttonDiv" > 
+                                    <button class = "action-button" style="background-color:rgb(139, 0, 0)" onclick="deleteUser()">Delete User</button>
+                                </div> 
+                            </div>
+                            <div>
+                                <label>Privileges:</label>
+                                <textarea
+                                style="height: 60px; text-align: left; overflow: auto; padding: 8px; resize: none; font-family: Arial, sans-serif;"
+                                id="fetchPrivileges"
+                                disabled
+                                ></textarea>
+                                <label>Select role:</label>
+                                <select id="setPrivilege">
+                                    <option value="">-- Choose role --</option>
+                                    <option value="MODIFY_USERS">Modify users</option>
+                                    <option value="MODIFY_PRODUCTS">Modify products</option>
+                                    <option value="MODIFY_DIET_PLANS">Modify diet plans</option>    
+                                    <option value="MODIFY_FOOD_ITEMS">Modify food items</option>                                                                 
+                                </select>  
+                                <div class="buttonDiv">
+                                    <button class = "action-button" style="background-color:rgb(139, 0, 0)" onclick="deletePrivilege()">Delete Privilege</button>                                    
+                                    <button class = "action-button"  onclick="setPrivilege()">Set privilege</button>
+                                </div> 
+
+                            </div> 
+                            <div>
+                                <label>Role:</label>
+                                <input id="fetchRole2" disabled/>
+                                <label>Select role:</label>
+                                <select id="setRole">
+                                    <option value="">-- Choose role --</option>
+                                    <option value="REGULAR">Regular</option>
+                                    <option value="EMPLOYEE">Employee</option>
+                                    <option value="ADMIN">Admin</option>                                                                  
+                                </select>  
+
+                                <div class="buttonDiv">                                    
+                                    <button class = "action-button"  onclick="setRole()">Set Role</button>
+                                </div> 
+                            </div> 
+                           
+                            <div>
+                                <label>Specializations:</label>
+                                <input id="fetchSpecialization" disabled/>
+                                <label>Select role:</label>
+                                <select id="setSpecialization">
+                                    <option value="">-- Choose role --</option>
+                                    <option value="DIETITIAN">Dietitian</option>
+                                    <option value="TRAINER">Trainer</option>                                                                                                   
+                                </select>  
+
+                                <div class="buttonDiv">                                    
+                                    <button class = "action-button" style="background-color:rgb(139, 0, 0)" onclick="deleteSpecialization()">Delete Specialization</button>                                    
+                                    <button class = "action-button"  onclick="setSpecialization()">Set Specialization</button>
+                                </div> 
+
+                            </div> 
+
+
+                        </div>
+                        
+                        <div>
+                            <p></p>
+                            <label id="userMessage"></label>
+                        </div>
+                        
 
                     </div>
 <!--    FOOD PANEL     -->         
                     <div id="modifyFood-controlPannel" class="controlPannel">
+                        <div>
+                            <label>Food name:</label>
+                            <input id="foodNameInput" placeholder="Enter food name here" />
+                        </div>   
+                        
+                        <div class="columnDiv">
+                            <div>
+                                <label> Calories: </label>
+                                <input id="caloriesInput"  type = "number" placeholder= "Enter calories here"/>
+                            </div> 
+                            <div>
+                                <label> Proteins:</label>
+                                <input id="proteinsInput" type = "number" placeholder= "Enter proteins here" />
+                            </div> 
+                            <div>
+                                <label>Fats</label>
+                                <input id="fatsInput" type = "number" placeholder= "Enter fats here" />
+                            </div> 
+                            <div>
+                                <label>Carbohydrates</label>
+                                <input id="carbohydratesInput" type = "number" placeholder= "Enter carbohydrates here" />
+                            </div> 
+                            <div>
+                                <label>Fibers</label>
+                                <input id="fibersInput" type = "number" placeholder= "Enter fibers here" />
+                            </div> 
+                        </div>
+
+                        <div class="buttonDiv">                                    
+                            <button class = "action-button" style="background-color:rgb(139, 0, 0)" onclick="deleteFoodItem()">Delete</button>                                    
+                            <button class = "action-button"  onclick="updateFoodItem()">Update</button>
+                            <button class = "action-button"  onclick="createFoodItem()">Create</button>
+                            <button class = "action-button"  onclick="getFoodItem()">Get</button>
+                        </div> 
+
+                        <div>
+                            <p></p>
+                            <label id="foodMessage"></label>
+                        </div>
 
                     </div>
 <!--    ORDER PANEL     -->         

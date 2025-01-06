@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Healthy life</title>   
+
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/popup.css">
+    <link rel="stylesheet" href="css/celandar_page.css">
+
+    <script src="js/cookies.js" defer></script>  
+    <script src="js/APIcoms.js" defer></script>  
+    <script src="js/login.js" defer></script>  
+    <script src="js/webSockets.js" defer></script> 
+    <script src="js/celandar_page.js" defer></script> 
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@latest/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+</head>
+<body>
+    <div class="nav-div">
+        <nav class="nav-left">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li>
+                    <a href="#">Shop</a>
+                    <ul>
+                        <li><a href="/shop_page.html">Healthy Products</a></li>
+                        <li><a href="/celandar_page.html">Diet Plans</a></li>                       
+                    </ul>
+                </li>   
+                <li id="show-calculator"><a href="/calculator_page.html">Calculator</a></li>             
+                <li id="show-about"><a href="/aboutus.html">About us</a></li>                
+                <li id="show-lang">
+                    <a href="#">Languages</a>
+                    <ul>
+                        <li><a href="#">English</a></li>
+                        <li><a href="#">Lietuvių</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-right">
+            <ul style="justify-content: flex-end;">    
+                <li><a href="cart_page.html" style="font-weight: bold;"> 🛒 </a></li>
+                <li class="hamburger-menu">
+                    <a href="#" style="font-weight: bold;">☰</a>
+                    <ul>
+                        <li onclick="openSignIn()">     <a id="signInButton"> Sign in</a></li>                         
+                        <li id="hide-settings">     <a href="/profile.html">Profile</a></li> 
+                        <li id="hide-admin">        <a href="/admin.html">Admin panel</a></li>
+                        <li id="hide-employee">     <a href="/employee_page.html">Employee panel</a></li>
+                        <li id="hide-about">        <a href="/aboutus.html">About us</a></li> 
+                        <li id="hide-calculator">   <a href="/calculator_page.html">Calculator</a></li>                    
+                        <li id="hide-lang">         <a href="#">Languages</a></li> 
+                        <li>                        <a href="mailto:sergejus.balciunas@gmail.com">Help center</a></li>
+
+                    </ul>
+                </li>                
+            </ul>            
+        </nav>
+
+    </div>
+
+    <div class="hero">       
+        <div class="center-content">  
+
+            <div class="main-section">  
+
+                <div class = "controlPannel">
+                    <h1>Register for a consultation!</h1>
+
+                    <div id="logOutState" style="display: flex; flex-direction: column;">
+                        <h1 style="color: rgb(255, 0, 0);">You have to sign In to register!</h1>                        
+                        <button class="action-button" style="width: 60%;align-self: center;" onclick="signInRegister()">Sign In</button>
+                    </div>
+
+                    <div id="logInState" style="display: none;flex-direction: column;">
+
+                        <p class="paragraf">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Are you ready to take control of your health and achieve your fitness goals? Registering for a diet plan consultation gives you personalized advice tailored to your unique needs, lifestyle, and preferences. Whether you're looking to lose weight, gain muscle, or simply eat healthier, our expert-guided plans make it easy to succeed. 
+                        
+                            <br><br>
+                        
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It’s simple! Just select the day, click on continue, enter your details, make your payment, and you’re done! Sit back and wait for a call from our expert to guide you further.
+                            <br><br>
+                        </p>
+
+                        
+                        <div >
+                            <label>Select Service:</label>
+                            <select id="serviceCategories">                                
+                               
+                                
+                              </select>                        
+                        </div>   
+
+                        <table id="dateTable" class="tableStyle">
+
+
+                        </table>
+                        
+                        <div class="buttonDiv">
+                            <button class="action-button" type="button" onclick="addServiceToCartClick()">Continue</button>                           
+                        </div>          
+        
+                        <p id="celandarMessage"></p>
+
+                        <div id = "hiddenValueContainer" style="display: none;"></div>
+                    </div>
+
+                </div>
+
+            <div>       
+                      
+        </div>
+    </div>
+</div>
+
+
+    <div id="SignInpopup" class="popup">
+        <div class="popup-content">
+            <span class="close-popup-button" onclick="closeSignIn()">&times;</span>
+            <h2>Sign In</h2>
+            <form>
+
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="username" required>               
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="password" required>                
+                
+                <button type="button" onclick="signIn()">Sign In</button>
+                <button type="button" onclick="register()">Register</button>
+
+                <p id="signIn_message"> </p>
+            </form>
+    </div>
+
+
+</body>
+</html>

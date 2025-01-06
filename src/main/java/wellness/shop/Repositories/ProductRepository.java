@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import wellness.shop.Models.BillingOrder.PaymentStatus;
 import wellness.shop.Models.Product;
@@ -55,6 +57,35 @@ public class ProductRepository {
         }
 
         return isCreated;
+    }
+
+    public Product getProductsByNamePrecise(String productName){
+        Product product = null;
+
+        String sql = "SELECT * FROM product WHERE name = ?;";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, productName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                product = new Product();
+                product.setId(resultSet.getInt("id"));
+                product.setName(resultSet.getString("name"));
+                product.setDescription(resultSet.getString("description"));
+                product.setPrice(BigDecimal.valueOf(resultSet.getDouble("price")));
+                product.setCategory(resultSet.getString("category"));
+                product.setImageUrl(resultSet.getString("imageUrl"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return product;
+        }
+
+        return product;
     }
 
     public Product getProductById(int id) {
@@ -146,7 +177,7 @@ public class ProductRepository {
 
     public void deleteProductServiceById(int productID) {
 
-        String sql = "DELETE FROM product_service WHERE id = ?";
+        String sql = "DELETE FROM product_service WHERE product_id = ?";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -283,34 +314,6 @@ public class ProductRepository {
         return price;
     }
 
-    public boolean registerDietService(int orderID, int productID) {
-
-        boolean isCreated = false;
-
-        if (orderID == 0 || productID == 0){
-            return isCreated;
-        }
-
-        String sql = "INSERT INTO diet_service (order_id, product_id, payment_status) VALUES (?, ?, ?);";
-
-        try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            preparedStatement.setInt(1, orderID);
-            preparedStatement.setInt(2, productID);
-            preparedStatement.setString(3, PaymentStatus.PENDING.name());
-
-            int rowsCreated = preparedStatement.executeUpdate();
-            isCreated = rowsCreated > 0;
-
-        } catch (SQLException e) {
-            System.out.println("SQL Error: " + e.getMessage());
-            return isCreated;
-        }
-
-        return isCreated;
-    }
-
 
     public boolean registerProductService(String employeeUuid, int productId, String employeeWebsocketKey) {
         boolean isCreated = false;
@@ -339,6 +342,31 @@ public class ProductRepository {
     }
 
 
+    public HashMap<String, String> getWebsocketToProductNameMap() {
+        HashMap<String, String> websocketToProductNameMap = new HashMap<>();
+
+        String sql = "SELECT ps.employee_websocket_key, p.name " +
+                "FROM product_service ps " +
+                "JOIN product p ON ps.product_id = p.id";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+
+                String websocketKey = resultSet.getString("employee_websocket_key");
+                String productName = resultSet.getString("name");
+
+                websocketToProductNameMap.put(websocketKey, productName);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return new HashMap<>();
+        }
+        return websocketToProductNameMap;
+    }
 
 
 

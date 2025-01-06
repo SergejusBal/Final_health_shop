@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:5500","http://localhost:7778/","http://127.0.0.1:7778/"})
 @RequestMapping("/noFilter")
 public class NoFilterController {
 
@@ -62,14 +61,6 @@ public class NoFilterController {
     }
 
 
-//    @Autowired
-//    private DateRegistrationRepository dateRegistrationRepository;
-
-//    @GetMapping("/test/{startDate}/{endDate}/{webKey}")
-//    public ResponseEntity<List<LocalDateTime>> getTest(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable String webKey) {
-//        List<LocalDateTime> localDateTimeList = dateRegistrationRepository.getTimeSlotsWithinDateRange(startDate,endDate,webKey);
-//        return new ResponseEntity(localDateTimeList,HttpStatus.OK);
-//    }
 
 
 

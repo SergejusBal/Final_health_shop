@@ -53,6 +53,24 @@ async function refrechJWTCookies() {
     }
 }
 
+function getUserUUID() {
+
+    let jwToken = getCookie("jwToken");
+
+    if (!jwToken) {
+        console.error("No JWT token found.");
+        return null;
+    }
+
+    try {
+        const claims = parseJwt(jwToken);
+        return claims.userUUID || null;
+    } catch (error) {
+        console.error("JWT parse error:", error);
+        return null;
+    }
+}
+
 async function loadUserElements() {
     
     let role = await getRole();
@@ -123,6 +141,10 @@ async function signIn(){
         const textData = await response.text();
         setCookie("jwToken",textData,1);    
         loadUserElements();
+
+        document.getElementById('username').value = "";
+        document.getElementById('password').value = "";  
+          
     } else {
         console.error("Response:", response ? response.status : "No response");
         document.getElementById('signIn_message').textContent = "Invalid Username or Password!";   
@@ -143,9 +165,59 @@ function getUserCredentials() {
         "username": username,
         "password": password
     });
-
-    document.getElementById('username').value = "";
-    document.getElementById('password').value = "";
     
     return userJson;
 }
+
+
+
+async function register(){
+
+    let jwToken = getCookie("jwToken"); 
+
+    if (!checkIfUserInfoValid()){
+        document.getElementById('signIn_message').textContent = "Invalid Username or Password!";
+        return;
+    } 
+
+    let userJSon = getUserCredentials();    
+    let response = await postAPI(javaURL + "/guest/register", userJSon , jwToken);
+
+
+    if(response && response.status == 409){
+        document.getElementById('signIn_message').textContent = "User already exists!?.";
+        return;   
+    }
+    else if (response && response.ok) {       
+        const textData = await response.text();
+        signIn();
+        return;
+    } else {
+        console.error("Response:", response ? response.status : "No response");
+        document.getElementById('signIn_message').textContent = "Connection error!";   
+        return;
+    }   
+
+}
+
+function checkIfUserInfoValid(){
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(username)) {
+        return false; 
+    }
+
+    const passwordRegex = /^(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+        return false; // Password is invalid
+    }
+
+    return true;
+}
+
+
+
+

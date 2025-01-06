@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Healthy life</title>   
+
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/popup.css">
+      <link rel="stylesheet" href="css/calculator_page.css">
+
+
+    <script src="js/cookies.js" defer></script>  
+    <script src="js/APIcoms.js" defer></script>  
+    <script src="js/login.js" defer></script>  
+    <script src="js/calculator_page.js" defer></script>  
+
+</head>
+<body>
+    <div class="nav-div">
+        <nav class="nav-left">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li>
+                    <a href="#">Shop</a>
+                    <ul>
+                        <li><a href="/shop_page.html">Healthy Products</a></li>
+                        <li><a href="/celandar_page.html">Diet Plans</a></li>                        
+                    </ul>
+                </li>   
+                <li id="show-calculator"><a href="/calculator_page.html">Calculator</a></li>             
+                <li id="show-about"><a href="/aboutus.html">About us</a></li>                
+                <li id="show-lang">
+                    <a href="#">Languages</a>
+                    <ul>
+                        <li><a href="#">English</a></li>
+                        <li><a href="#">Lietuvių</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-right">
+            <ul style="justify-content: flex-end;">    
+                <li><a href="cart_page.html" style="font-weight: bold;"> 🛒 </a></li>
+                <li class="hamburger-menu">
+                    <a href="#" style="font-weight: bold;">☰</a>
+                    <ul>
+                        <li onclick="openSignIn()">     <a id="signInButton"> Sign in</a></li>                        
+                        <li id="hide-settings">     <a href="/profile.html">Profile</a></li> 
+                        <li id="hide-admin">        <a href="/admin.html">Admin panel</a></li>
+                        <li id="hide-employee">     <a href="/employee_page.html">Employee panel</a></li>
+                        <li id="hide-about">        <a href="/aboutus.html">About us</a></li> 
+                        <li id="hide-calculator">   <a href="/calculator_page.html">Calculator</a></li>                    
+                        <li id="hide-lang">         <a href="#">Languages</a></li> 
+                        <li>                        <a href="mailto:sergejus.balciunas@gmail.com">Help center</a></li>
+
+                    </ul>
+                </li>                
+            </ul>            
+        </nav>
+
+    </div>
+
+    <div class="hero">       
+        <div class="center-content">  
+
+            <div class="main-section">  
+
+                <div class = "controlPannel">
+                    <h1>Welcome to the Calorie and Nutrient Calculator!</h1>
+
+                    <div id="logOutState" style="display: flex; flex-direction: column;">
+                        <h1 style="color: rgb(255, 0, 0);">You have to sign In to calculate!</h1>                        
+                        <button class="action-button" style="width: 60%;align-self: center;" onclick="signInRegister()">Sign In</button>
+                    </div>
+
+                    <div id="logInState" style="display: none;flex-direction: column;">
+                          
+                            <p class="paragraf">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The calculation of daily macronutrient requirements is based on two key factors: <strong>activity level</strong> and <em>Basal Metabolic Rate (BMR)</em>.  
+
+                                The <strong>Basal Metabolic Rate (BMR)</strong> is the number of calories your body needs to perform basic functions, such as breathing and maintaining body temperature, at rest.  
+
+                                To calculate your <strong>Total Daily Energy Expenditure (TDEE)</strong>, we use the formula:  
+                                <em><strong>TDEE = BMR × Activity Multiplier</strong></em>.  
+   
+                                The <strong>Activity Multiplier</strong> varies based on your lifestyle: 
+                            </p>                                 
+                                <ul class="paragraf">
+                                    <li><strong>1.4</strong>: Sedentary (little to no exercise)</li>
+                                    <li><strong>1.6</strong>: Moderately active (exercise 3–5 days per week)</li>
+                                    <li><strong>1.8</strong>: Very active (intense exercise or physically demanding job)</li>
+                                    <li><strong>2.0</strong>: Extremely active (intense daily exercise and a physically demanding job)</li>
+                                </ul>                                  
+                            <p class="paragraf">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Once the TDEE is calculated, the macronutrient requirements for <strong> proteins, fats, and carbohydrates</strong> are determined as a percentage of your total calories based on dietary recommendations. 
+                            </p>
+                            <div class="columnDivData">
+                            <div>
+                                <label>Weight (kg): </label>
+                                <input id="weightInput" type=number/ placeholder="0.00 kg">
+                            </div> 
+                            <div>
+                                <label>Height (cm):</label>
+                                <input id="heightInput" type=number/ placeholder="0.00 cm">
+                            </div> 
+                            <div>
+                                <label>Age:</label>
+                                <input id="fetchUUID" type=number/ placeholder="0 years">
+                            </div> 
+                            <div>                              
+                                <label>Gender:</label>
+                                <select id="genderValue">                                 
+                                    <option value=1>Male</option>
+                                    <option value=2>Female</option>                                                                                              
+                                </select> 
+                            </div> 
+                            <div>                                
+                                <label>Activity Level:</label>
+                                <select id="activityLvl">                                                                  
+                                    <option value=1>Sedentary</option>
+                                    <option value=2>Moderately Active</option>
+                                    <option value=3>Active</option>  
+                                    <option value=4>Very active</option>       
+                                </select> 
+                            </div> 
+                        </div> 
+
+                        <div class="buttonDiv">                                                            
+                            <button class = "action-button"  onclick="calculateYourCalories()">Calculate</button>
+                        </div>
+
+                        <div>
+                            <p></p>
+                            <label id="calculateMessage"></label>
+                        </div>    
+
+                        <div class="resultDiv" id="resultDiv">
+                            <div>
+                                <h1 style="font-weight: bold;">Your daily Requirements: </h1>                              
+                            </div>
+
+                            <div class="columnDivData" >
+                                <div>
+                                    <label>Calories: </label> <br> 
+                                    <label id="caloriesValue">0.0 kcal </label>
+                                </div>
+                                <div>
+                                    <label>Proteins: </label> <br>
+                                    <label id="proteinsValue"> 0.0 g </label>
+                                </div>
+                                <div>
+                                    <label>Fats: </label> <br>
+                                    <label id="fatValue">0.0 g </label>
+                                </div>
+                                <div>
+                                    <label>Carbohydrates: </label> <br>
+                                    <label id="carbohydratesValue">0.0 g </label>
+                                </div>
+                                <div>
+                                    <label>Fiber: </label> <br>
+                                    <label id="fiber">0.0 g </label>
+                                </div>                               
+
+                            </div>                         
+                        
+                        </div>
+                        <div class="columnDiv">
+                            <div>
+                                <p></p>
+                                <label>Food Item: </label>
+                                <input id="foodNameInput" placeholder="Enter Food Item Name">
+                            </div>
+                        <div class="columnDiv">
+                            <div>                               
+                            </div>
+                            <div>
+                                <p></p>
+                                <label>Amount: </label>
+                                <input id="foodAmountInput" type="number" placeholder="0.00 g">
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="resultDiv" id="foodresultDiv">
+                            <div>
+                                <h1 style="font-weight: bold;" id = "fetchFoodName"> Unknown Food</h1> 
+                                <input id="hiddenfetchFoodName"  type="hidden"> </input>                          
+                            </div>
+
+                            <div class="columnDivData" >
+                                <div>
+                                    <label>Calories: </label> <br> 
+                                    <label id="fetchCaloriesValue">0.0 kcal </label>
+                                </div>
+                                <div>
+                                    <label>Proteins: </label> <br>
+                                    <label id="fetchProteinsValue"> 0.0 g </label>
+                                </div>
+                                <div>
+                                    <label>Fats: </label> <br>
+                                    <label id="fetchFatValue">0.0 g </label>
+                                </div>
+                                <div>
+                                    <label>Carbohydrates: </label> <br>
+                                    <label id="fetchCarbohydratesValue">0.0 g </label>
+                                </div>
+                                <div>
+                                    <label>Fiber: </label> <br>
+                                    <label id="fetchFiber">0.0 g </label>
+                                </div>  
+                            </div> 
+                        </div>   
+
+                        <div class="buttonDiv">                              
+                            <button class = "action-button"  onclick="checkCalories()">Check</button>        
+                            <button class = "action-button"  onclick="addThisProduct()">Add</button>  
+                        </div>
+
+                        <div>
+                            <p></p>
+                            <label id="foodCalculationMessage"></label>
+                        </div>  
+                        <div id="hiddenTableDiv" style="display: none;">
+                            <table id="foodTable"  class="tableStyle">
+                                <thead>
+                                    <tr>
+                                        <th>Food</th>
+                                        <th>Amount (g)</th>
+                                        <th>Calories (kcal)</th>
+                                        <th >Proteins (g)</th>
+                                        <th >Fats (g)</th>
+                                        <th >Carbohydrates (g)</th>
+                                        <th >Fiber (g)</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bodyOfFoodItems">
+                                
+                                </tbody>
+                                <tbody id="bodyForTotal">
+                                
+                                </tbody>
+                            </table>
+
+                            <div class="buttonDiv">  
+                                <button class = "action-button"  onclick="clearFoodItems()">Clear</button>  
+                            
+                            </div>
+                        </div>
+                    </div>   
+                                  
+
+                </div>
+
+            <div>       
+                      
+        </div>
+    </div>
+</div>
+
+
+    <div id="SignInpopup" class="popup">
+        <div class="popup-content">
+            <span class="close-popup-button" onclick="closeSignIn()">&times;</span>
+            <h2>Sign In</h2>
+            <form>
+
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="username" required>               
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="password" required>                
+                
+                <button type="button" onclick="signIn()">Sign In</button>
+                <button type="button" onclick="register()">Register</button>
+
+                <p id="signIn_message"> </p>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+</html>

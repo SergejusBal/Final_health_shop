@@ -12,7 +12,9 @@ import wellness.shop.Utilities.UtilitiesGeneral;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -37,6 +39,15 @@ public class ProductService {
     }
     public List<Product> getProductsByName(String productName,int limit, int offset){
         return productRepository.getProductsByName(productName,limit,offset);
+    }
+
+    public Product getProductsByNamePrecise(String productName){
+        return productRepository.getProductsByNamePrecise(productName);
+    }
+
+
+    public HashMap<String, String> getWebsocketToProductMap() {
+        return productRepository.getWebsocketToProductNameMap();
     }
 
     public int getProductIdByName(String productName){
@@ -130,9 +141,7 @@ public class ProductService {
         );
     }
 
-    public boolean registerDietServiceInternal(int orderID, int productID) {
-        return productRepository.registerDietService(orderID, productID);
-    }
+
 
     private boolean generateSchedule(String websocketKey){
 

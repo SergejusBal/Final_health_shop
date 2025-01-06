@@ -99,6 +99,32 @@ async function uploadProduct(){
     document.getElementById('productMessage').value = textData;
 }
 
+async function uploadService(){
+
+    const confirmUpload = confirm('Are you sure you want to create this service?');
+    if(!confirmUpload) return;        
+    let employeeName = document.getElementById("serviceProvider").value;
+    document.getElementById("serviceProvider").value = "";
+    let jwToken = getCookie("jwToken");   
+    let userJSon = getPoroductDetails();   
+
+    let response = await postAPI(javaURL + "/product/secured/service/new/"+ employeeName, userJSon , jwToken); 
+
+    let textData;
+    if (response && response.ok) {       
+        textData = await response.text(); 
+        document.getElementById('productMessage').textContent = textData;         
+    } else {
+        console.error("Response:", response ? response.status : "No response");
+        document.getElementById('productMessage').textContent = "Error during upload!";   
+        return;
+    }
+
+    document.getElementById('productMessage').value = textData;
+}
+
+
+
 async function updateProduct(){
 
     const confirmUpload = confirm('Are you sure you want to update this product?');
@@ -111,7 +137,8 @@ async function updateProduct(){
 
     let textData;
     if (response && response.ok) {       
-        textData = await response.text();       
+        textData = await response.text(); 
+        document.getElementById('productMessage').textContent = textData;      
     } else {
         console.error("Response:", response ? response.status : "No response");
         document.getElementById('productMessage').textContent = "Error during update!";   
@@ -120,6 +147,8 @@ async function updateProduct(){
 
     document.getElementById('productMessage').value = textData;
 }
+
+
 
 
 function getPoroductDetails() {

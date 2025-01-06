@@ -5,35 +5,42 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wellness.shop.Models.Users.Enums.Role;
+import wellness.shop.Models.Users.Profile;
 import wellness.shop.Security.JWT;
+import wellness.shop.Services.UserService;
+import wellness.shop.Utilities.UtilitiesGeneral;
 
 import java.util.HashMap;
 
 @RestController
-//@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:5500","http://localhost:7778/","http://127.0.0.1:7778/"})
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private JWT jwt;
 
-    @GetMapping("/reload")
-    public ResponseEntity<Boolean> refresh(@RequestHeader("Authorization") String authorizationHeader) {
+    @Autowired
+    private UserService userService;
 
-        if(authorizationHeader == null || authorizationHeader.isEmpty()) {
-            return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
-        }
+    @PutMapping("/modify/profile")
+    public ResponseEntity<String> changeUserRole(@RequestBody Profile profile, @RequestHeader("Authorization") String authorizationHeader) {
 
-        Role role = jwt.getRole(authorizationHeader);
-        String userUUID = jwt.getUUID(authorizationHeader);
+        String response = userService.updateProfile(profile, authorizationHeader);
 
-        if(role != null && userUUID != null) {
-            return new ResponseEntity<>(true, HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
-        }
+        return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
     }
+
+
+    @GetMapping("/get/profile/{userUUID}")
+    public ResponseEntity<Profile> changeUserRole(@PathVariable String userUUID, @RequestHeader("Authorization") String authorizationHeader) {
+
+        Profile profile = userService.getProfile(userUUID, authorizationHeader);
+
+        if(profile == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        else if (profile.getID() == 0) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        else return new ResponseEntity<>(profile,HttpStatus.OK);
+    }
+
 
 
 }

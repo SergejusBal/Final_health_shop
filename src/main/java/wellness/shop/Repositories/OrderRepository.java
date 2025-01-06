@@ -327,5 +327,51 @@ public class OrderRepository {
         return promoCode;
     }
 
+    public boolean registerDietService(int orderID, int productID) {
+
+        boolean isCreated = false;
+
+        if (orderID == 0 || productID == 0){
+            return isCreated;
+        }
+
+        String sql = "INSERT INTO diet_service (order_id, product_id, payment_status) VALUES (?, ?, ?);";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, orderID);
+            preparedStatement.setInt(2, productID);
+            preparedStatement.setString(3, PaymentStatus.PENDING.name());
+
+            int rowsCreated = preparedStatement.executeUpdate();
+            isCreated = rowsCreated > 0;
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return isCreated;
+        }
+
+        return isCreated;
+    }
+
+    public boolean setPaymentDietServicePaymentStatus(int orderID, PaymentStatus paymentStatus){
+
+        String sql = "UPDATE diet_service SET payment_status = ? WHERE order_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, paymentStatus.name());
+            preparedStatement.setInt(2, orderID);
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            return rowsUpdated > 0;
+
+        }catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            return false;
+        }
+    }
 
 }
