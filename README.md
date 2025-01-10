@@ -8,5 +8,3 @@ This document contains comprehensive information about the project, including:
 - **Setup instructions**
 - **Features**
 - **Additional details**
-
-Feel free to explore the document for a deeper understanding of the project.
