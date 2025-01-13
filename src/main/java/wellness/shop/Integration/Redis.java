@@ -19,29 +19,51 @@ public class Redis {
 
     }
 
+    /**
+     * Put serialized object to Redis. exTime is time object lasts
+     *
+     */
     public void putWithSerialize(String key, Object value, int exTime) throws IOException {
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.setex(key.getBytes(), exTime, serialize(value));
         }
     }
 
+    /**
+     * Put json object to Redis. exTime is time object lasts
+     *
+     */
     public void put(String key, String json,int exTime) {
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.setex(key.getBytes(), exTime, json.getBytes());
         }
     }
 
+    /**
+     * Put json object to Redis permanently.
+     *
+     */
     public void putPermanently(String key, String json) {
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.set(key.getBytes(), json.getBytes());
         }
     }
 
+    /**
+     * get All Key from redis.
+     *
+     */
+
     public Set<String> getKeys()  throws IOException {
         try (Jedis jedis = jedisPool.getResource()) {
             return jedis.keys("*");
         }
     }
+
+    /**
+     * Get serialized object from Redis.
+     *
+     */
     public Object getWithDeserialize(String key) throws IOException, ClassNotFoundException {
         try (Jedis jedis = jedisPool.getResource()) {
             byte[] data = jedis.get(key.getBytes());
@@ -51,6 +73,11 @@ public class Redis {
             return null;
         }
     }
+
+    /**
+     * Get json object from Redis.
+     *
+     */
     public String get(String key) {
         try (Jedis jedis = jedisPool.getResource()) {
             byte[] data = jedis.get(key.getBytes());
@@ -61,6 +88,11 @@ public class Redis {
         }
     }
 
+    /**
+     * Check if such key exist in redis.
+     *
+     */
+
     public boolean keyExists(String key){
         try (Jedis jedis = jedisPool.getResource()) {
            return jedis.exists(key);
@@ -68,6 +100,11 @@ public class Redis {
            return false;
         }
     }
+
+    /**
+     * Delete object from redis.
+     *
+     */
 
     public void delete(String key) {
         try (Jedis jedis = jedisPool.getResource()) {
@@ -90,6 +127,11 @@ public class Redis {
             return in.readObject();
         }
     }
+
+    /**
+     * Close redis.
+     *
+     */
 
     public void close() {
         jedisPool.close();

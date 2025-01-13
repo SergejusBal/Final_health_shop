@@ -3,7 +3,6 @@ package wellness.shop.Models;
 import java.time.LocalDateTime;
 
 public class TimeSlotOrderDTO {
-
     private LocalDateTime timeSlot;
     private String employeeUuid;
     private String userUUID;

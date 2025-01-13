@@ -20,6 +20,10 @@ public class ChatGPD {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    /**
+     * Send a message to chatGPD AI. You need to use ChatMessage model
+     *
+     */
     public String sendChatRequest(ChatMessage chatMessage)  {
         OkHttpClient client = new OkHttpClient();
 

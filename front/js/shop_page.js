@@ -1,19 +1,29 @@
 
+var loadedProcutCounter = 0;
+var findByCaretoryClick = false;
+var findByNameClick = false;
+
 
 async function findProductsByCategory(){
     let productCategory = document.getElementById("productCategory").value;    
     if(!productCategory) return;
 
+    loadedProcutCounter = 0;
+    findByCaretoryClick = true;
+    findByNameClick = false;
+    document.getElementById("productCardCointainer").innerHTML = "";   
     const jSonData = await getProductsByCategory(productCategory,10,0);
     createProductCards(jSonData); 
 }
 
-async function findProductsByName(){
-
+async function findProductsByName(){    
     let productName = document.getElementById("productsName").value; 
 
-    const jSonData = await getProductsByName(productName,10,0);
-    console.log();
+    loadedProcutCounter = 0;
+    findByCaretoryClick = false;
+    findByNameClick = true;
+    document.getElementById("productCardCointainer").innerHTML = "";   
+    const jSonData = await getProductsByName(productName,10,0);   
     createProductCards(jSonData);
 }
 
@@ -53,7 +63,7 @@ async function getProductsByName(productName,limit,offset){
     let jSonData;
 
     if (response && response.status == 204) {  
-        document.getElementById('productMessage').textContent = "Sorry we don't have that!";   
+        document.getElementById('productMessage').textContent = "Sorry we don't have more!";   
         return null;
     }
     else if (response && response.ok) {       
@@ -62,7 +72,7 @@ async function getProductsByName(productName,limit,offset){
 
     } else {
         console.error("Response:", response ? response.status : "No response");
-        document.getElementById('productMessage').textContent = "Ops something went wrong! Sorry!";   
+        document.getElementById('productMessage').textContent = "Ops something went wrong!";   
         return null;
     }
 };
@@ -73,15 +83,12 @@ async function createProductCards(jSonData) {
 
     if(!jSonData) return;
     document.getElementById('productMessage').textContent = "";   
-    document.getElementById("productCardCointainer").innerHTML = "";  
-
-    console.log(jSonData);
-
 
     jSonData.filter(product => !(product.category === "Service" && !checkRole()))
             .forEach(product => {              
-
-                 addProductCard(product);
+                loadedProcutCounter++;
+                console.log(loadedProcutCounter);
+                addProductCard(product);
              });       
     
 }
@@ -192,4 +199,37 @@ function findProductIndex(cart, productId) {
         }
     }
     return -1;
+}
+
+
+flag = true;
+window.addEventListener('scroll', async function() { 
+   
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight && flag) {
+        flag = false;
+
+        let jSonData = {};
+        if(findByNameClick) {
+            let productName = document.getElementById("productsName").value; 
+            jSonData = await getProductsByName(productName,10,loadedProcutCounter);   
+        }
+        else if (findByNameClick){
+            let productCategory = document.getElementById("productCategory").value;    
+            if(!productCategory) return;
+            jSonData = await getProductsByCategory(productCategory,10,loadedProcutCounter)
+        }
+        else{   
+            return;
+        }
+
+        createProductCards(jSonData);
+        await sleep(1000); 
+        flag = true;
+    }
+});
+
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

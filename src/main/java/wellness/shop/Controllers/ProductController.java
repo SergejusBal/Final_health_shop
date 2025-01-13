@@ -52,7 +52,7 @@ public class ProductController {
 
         List<Product> products = productService.getProductsByName(productName, limit, offset);
         if (!products.isEmpty()) return new ResponseEntity<>(products, HttpStatus.OK);
-        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/public/get/weSockets")

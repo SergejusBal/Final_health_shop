@@ -154,7 +154,10 @@
     .columnDiv {
         grid-template-columns: 1fr; 
     }  
-    .hideElement{
+    th.hideElement{
+        display: none !important;
+    }
+    td.hideElement{
         display: none !important;
     }
 

@@ -55,14 +55,6 @@ public class StripeService {
 
 
 
-//    @Autowired
-//    private PromoService promoService;
-//    @Autowired
-//    private MailService mailService;
-
-
-//    private final String REFUND_SIZE = "0.5";
-//    private final int REFUND_DAYS_APPLIED = 7;
 
     public StripeService(){
         objectMapper = new ObjectMapper();
@@ -122,7 +114,11 @@ public class StripeService {
         return session;
     }
 
-    private Long calculateOrderPrice(int orderID){
+    /**
+     * Calculates the price of the basket if basket has a service it register it.
+     *
+     */
+    public Long calculateOrderPrice(int orderID){
 
         List<CartItem> cartItemList = getOrderItemArrayByOrderID(orderID);
 
@@ -148,7 +144,7 @@ public class StripeService {
 
     }
 
-    private List<CartItem> getOrderItemArrayByOrderID(int orderID){
+    public List<CartItem> getOrderItemArrayByOrderID(int orderID){
     String jsonItemString = orderService.getProductJsonByOrderIDInternal(orderID);
     return generateObjectFromJSon(jsonItemString, new TypeReference<List<CartItem>>() {});
     }
@@ -235,20 +231,6 @@ public class StripeService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private String getUserPaymentEmail(int paymentID){
         String paymentIntentID = stripeRepository.getPaymentIntentID(paymentID);
 
@@ -282,86 +264,6 @@ public class StripeService {
         }
         return customerEmail;
     }
-
-
-
-
-//
-//
-//    public HashMap<String,String> refundByOrderID(int orderID, String authorizationHeader ){
-//
-//        HashMap<String,String> responseHashMap = new HashMap<>();
-//
-//        if(!userService.userAutoLogIn(authorizationHeader)) {
-//            responseHashMap.put("response","No authorization");
-//            return responseHashMap;
-//        }
-//
-//        responseHashMap.putAll(refund(orderID));
-//
-//        return responseHashMap;
-//    }
-//
-//    public Long checkRefundSize(String refundKey){
-//
-//        int orderID = stripeRepository.getOrderIDWithUUID(refundKey);;
-//
-//        return calculateRefundTotalPrice(orderID);
-//    }
-//
-//    public HashMap<String,String> refundByRefundKey(String refundKey){
-//
-//        int orderID = stripeRepository.getOrderIDWithUUID(refundKey);
-//
-//        return refund(orderID);
-//    }
-//
-
-//
-
-//
-
-//
-
-//
-//
-//
-
-//
-
-//
-
-//
-//
-//
-
-//
-//    private Long calculateRefundTotalPrice(int orderID){
-//
-//        HashMap<String, CartListItem> cartList = getOrderItemArrayByOrderID(orderID);
-//        long totalPrice = 0;
-//        LocalDate today = LocalDate.now();
-//
-//        for (String key : cartList.keySet()) {
-//            int quantity = cartList.get(key).getQuantity();
-//            Event event = eventService.getItemByID(cartList.get(key).getId());
-//            BigDecimal price = event.getPrice();
-//            LocalDate eventDate = event.getDate().toLocalDate();
-//            price = price.multiply(new BigDecimal(100));
-//            price = price.multiply(new BigDecimal(quantity));
-//
-//            if(today.isAfter(eventDate.minusDays(REFUND_DAYS_APPLIED))) price = price.multiply(new BigDecimal(REFUND_SIZE));
-//            if(today.isAfter(eventDate)) price = price.multiply(BigDecimal.ZERO);
-//
-//            totalPrice += price.longValue();
-//        }
-//
-//        String promoCode = orderService.getUsedPromo(orderID);
-//        double promoSize = promoService.checkPromo(promoCode);
-//
-//        return (long) (totalPrice * promoSize);
-//    }
-
 
     private <T> T generateObjectFromJSon(String json, TypeReference<T> typeReference) {
         try {

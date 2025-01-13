@@ -2,13 +2,19 @@ package wellness.shop.Components;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import wellness.shop.Components.TheadTask.FoodListManager;
 import wellness.shop.Integration.RabbitMQ;
 import wellness.shop.Integration.RabbitMQMessageProcessor;
 import wellness.shop.Integration.Redis;
+import wellness.shop.Models.FoodItem;
 import wellness.shop.Repositories.DateRegistrationRepository;
+import wellness.shop.Repositories.FoodRepository;
 import wellness.shop.Repositories.IPRepository;
+import wellness.shop.Services.ChatAIService;
+import wellness.shop.Services.FoodService;
 import wellness.shop.Utilities.UtilitiesGeneral;
 
 import java.time.DayOfWeek;
@@ -16,6 +22,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Component
 public class ScheduledTasks {
@@ -33,6 +41,10 @@ public class ScheduledTasks {
     private IPRepository ipRepository;
     @Autowired
     private DateRegistrationRepository dateRegistrationRepository;
+    @Autowired
+    private ChatAIService chatAIService;
+    @Autowired
+    private FoodService foodService;
 
     private RabbitMQ rabbitMQ;
 
@@ -44,14 +56,40 @@ public class ScheduledTasks {
         this.redis = new Redis(redisHost, redisPort);
 
     }
+//Generates 100 food items then uses Manager to mage threads and then safe ask items from AI and then writes them.
+    @Scheduled(fixedRate = 86400000)
+    public void fillFoodTable(){
+        List<String> foodList = chatAIService.getRandomFoodList();
+        FoodListManager foodListManager = new FoodListManager(foodList);
 
-    @Scheduled(fixedRate = 60000)
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+
+        while(!foodListManager.isEmpty()){
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    String foodString = foodListManager.getFoodItem();
+                    if(foodString == null) return;
+                    FoodItem foodItem = chatAIService.getFoodItemFromAI(foodString);
+                    if(foodItem == null) return;
+                    else foodService.registerFoodItemIA(foodItem);
+                }
+            });
+        };
+
+        executor.shutdown();
+    }
+
+   @Async
+   @Scheduled(fixedRate = 60000)
     public void IPChecks(){
         HashMap<String,Integer> ipMap = getIPMap();
         List<String> bannedIpsList = getBanList(ipMap);
         banIps(bannedIpsList);
     }
 
+
+    //Registers each day a new date. Before registration program checks if it was registered.
     @Scheduled(fixedRate = 86400000)
     public void createRegistrationNewDates(){
 

@@ -185,10 +185,14 @@ function addThisProduct() {
     const amountCell = newRow.insertCell(1);
     const caloriesCell = newRow.insertCell(2);
     const proteinsCell = newRow.insertCell(3);
+    proteinsCell.className = "hideElement";
     const fatsCell = newRow.insertCell(4);
+    fatsCell.className = "hideElement";
     const carbohydratesCell = newRow.insertCell(5);
+    carbohydratesCell.className = "hideElement";
     const fiberCell = newRow.insertCell(6);
-
+    fiberCell.className = "hideElement";
+   
     const removeRow = newRow.insertCell(7);
 
     const removeButton = document.createElement("button");
@@ -248,11 +252,15 @@ function updateTotals() {
 
     const totalFoodCell = totalRow.cells[0];
     const totalAmountCell = totalRow.cells[1];
-    const totalCaloriesCell = totalRow.cells[2];
+    const totalCaloriesCell = totalRow.cells[2];    
     const totalProteinsCell = totalRow.cells[3];
+    totalProteinsCell.className = "hideElement";
     const totalFatsCell = totalRow.cells[4];
+    totalFatsCell.className = "hideElement";
     const totalCarbohydratesCell = totalRow.cells[5];
+    totalCarbohydratesCell.className = "hideElement";
     const totalFiberCell = totalRow.cells[6]
+    totalFiberCell.className = "hideElement";
 
    
     totalFoodCell.textContent = "Total";

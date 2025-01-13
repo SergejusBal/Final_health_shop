@@ -90,21 +90,25 @@ function loadAdmin() {
     document.getElementById('hide-settings').style.display = 'block';
     document.getElementById('hide-admin').style.display = 'block';
     document.getElementById('hide-employee').style.display = 'block';
+    document.getElementById('hide-refund').style.display = 'block';
 }
 
 function unloadAll() {
     document.getElementById('hide-settings').style.display = 'none';
     document.getElementById('hide-admin').style.display = 'none';
     document.getElementById('hide-employee').style.display = 'none';
+    document.getElementById('hide-refund').style.display = 'none';    
 }
 
 function loadEmployee() {
     document.getElementById('hide-settings').style.display = 'block';
     document.getElementById('hide-employee').style.display = 'block';
+    document.getElementById('hide-refund').style.display = 'block';
 }
 
 function loadRegular(){
     document.getElementById('hide-settings').style.display = 'block';
+    document.getElementById('hide-refund').style.display = 'block';
 }
 
 

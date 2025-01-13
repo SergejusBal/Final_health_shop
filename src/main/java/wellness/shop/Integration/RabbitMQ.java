@@ -27,6 +27,10 @@ public class RabbitMQ {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    /**
+     * Send any object to rabbitMQ as json to selected destination.
+     *
+     */
     public <T> void sendObjectToQueue(T t, String destinationQueueName) {
         String jsonMessage = generateJson(t);
         try (Connection connection = factory.newConnection();
@@ -40,6 +44,11 @@ public class RabbitMQ {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * Takes all messages in queue and pops them one by one. New messages are kept in queue. This method requires RabbitMQMessageProcessor interfaces, where popMessageLogic need to be described.
+     *
+     */
 
     public <T> void popALlMessages(RabbitMQMessageProcessor<T> rabbitMQMessageProcessor, String destinationQueueName, Class<T> clazz) {
         try (Connection connection = factory.newConnection();

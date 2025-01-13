@@ -39,15 +39,17 @@ public class DateRegistrationService {
         LocalDate tomorrow = today.plusDays(1);
         LocalDate dateAfter29Days = today.plusDays(29);
 
-
+        // check if date is empty
         String registeredUserUUID = dateRegistrationRepository.getRegistrationUserUUID(webSocketDTO.getReservedTime(),webSocketKey);
 
+        // remove registration if it exists
         if(registeredUserUUID != null && registeredUserUUID.equals(userUUID)){
             return dateRegistrationRepository.registerUserUUID(null,webSocketKey,webSocketDTO.getReservedTime());
         }
-
+        // check if there is a registration upcoming  weeks
         if (dateRegistrationRepository.doesRegistrationExist(tomorrow,dateAfter29Days,webSocketKey,userUUID)) return false;
 
+        // if free a date is registered
         if(registeredUserUUID == null || registeredUserUUID.isEmpty()){
             return dateRegistrationRepository.registerUserUUID(userUUID,webSocketKey,webSocketDTO.getReservedTime());
         }

@@ -8,6 +8,9 @@ import wellness.shop.Integration.ChatGPD.ChatMessage;
 import wellness.shop.Integration.ChatGPD.Models.Message;
 import wellness.shop.Models.FoodItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ChatAIService {
     @Value("${ai.key}")
@@ -20,9 +23,15 @@ public class ChatAIService {
         chatGPD = new ChatGPD(AI_KEY);
     }
 
+
+    /**
+     * ChatGPD AI. Take food name as an input returns Food item object. If no valid food given returns null.
+     *
+     */
+
     public FoodItem getFoodItemFromAI(String foodName){
 
-        String unfilteredAIResponse = aIResponse(foodName);
+        String unfilteredAIResponse = aIResponseFoodItem(foodName);
 
         if ("-1".equals(unfilteredAIResponse)) return null;
 
@@ -50,7 +59,7 @@ public class ChatAIService {
     }
 
 
-    private String aIResponse(String foodName){
+    private String aIResponseFoodItem(String foodName){
         Message systemPrompt = new Message("system",    "Calories in kcal, proteins, fats, carbohydrates, fibers in g. \n" +
                                                                     "Your response: {calories},{proteins},{fats},{carbohydrates},{fibers}.\n" +
                                                                     "Account for preparation and food description.\n" +
@@ -65,6 +74,37 @@ public class ChatAIService {
 
         return chatGPD.sendChatRequest(chatMessage);
     }
+
+
+    /**
+     * ChatGPD AI. Returns a list of random food items.
+     *
+     */
+
+    public List<String> getRandomFoodList(){
+        String foodListString = getFoodList();
+          String[] foodList;
+        try {
+            foodList  = foodListString.split(", ");
+        }catch (Exception  e){
+            return new ArrayList<>();
+        }
+
+        return new ArrayList<>(List.of(foodList));
+    }
+
+    private String getFoodList(){
+        Message systemPrompt = new Message("system",    "Generate a list of 100 random food items, separated by commas, formatted in a single sentence without line breaks. \n" +
+                                                                    "The items should include a variety of global dishes, snacks, and meals, ensuring they are diverse and recognizable. \n");
+
+
+        ChatMessage chatMessage = new ChatMessage("gpt-4o",0.25);
+        chatMessage.addMessage(systemPrompt);
+
+
+        return chatGPD.sendChatRequest(chatMessage);
+    }
+
 
 
 

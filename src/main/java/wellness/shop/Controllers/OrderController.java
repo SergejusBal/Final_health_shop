@@ -49,7 +49,7 @@ public class OrderController {
 
 
     @GetMapping("/secured/get/all/{paymentStatus}")
-    public ResponseEntity<List<BillingOrder>> getOrderByID(@PathVariable PaymentStatus paymentStatus, @RequestParam int limit, @RequestParam int offset, @RequestHeader("Authorization") String authorizationHeader){
+    public ResponseEntity<List<BillingOrder>> getAllOrders(@PathVariable PaymentStatus paymentStatus, @RequestParam int limit, @RequestParam int offset, @RequestHeader("Authorization") String authorizationHeader){
 
         List<BillingOrder> billingOrderList = orderService.getAllOrders(paymentStatus,limit,offset,authorizationHeader);
 

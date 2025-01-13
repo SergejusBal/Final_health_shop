@@ -294,7 +294,7 @@ function createTable(jsonString) {
 
 async function setUpdateOrder(id){
 
-    const confirmUpload = confirm('Are you sure you want to update this product?');
+    const confirmUpload = confirm('Are you sure you want to update this order?');
     if(!confirmUpload) return;
 
     let jwToken = getCookie("jwToken"); 

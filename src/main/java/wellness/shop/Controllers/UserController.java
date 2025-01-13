@@ -32,7 +32,7 @@ public class UserController {
 
 
     @GetMapping("/get/profile/{userUUID}")
-    public ResponseEntity<Profile> changeUserRole(@PathVariable String userUUID, @RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<Profile> getProfile(@PathVariable String userUUID, @RequestHeader("Authorization") String authorizationHeader) {
 
         Profile profile = userService.getProfile(userUUID, authorizationHeader);
 

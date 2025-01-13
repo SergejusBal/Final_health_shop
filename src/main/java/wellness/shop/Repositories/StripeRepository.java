@@ -115,7 +115,7 @@ public class StripeRepository {
 
             if(!resultSet.next()) return paymentIntentID;
 
-            paymentIntentID = resultSet.getString("order_id");
+            paymentIntentID = resultSet.getString("payment_intent_id");
 
 
         }catch (SQLException e) {

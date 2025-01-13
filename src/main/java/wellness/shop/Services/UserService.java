@@ -34,7 +34,6 @@ public class UserService {
         return userRepository.getUsernameByUuid(userUUID);
     }
 
-
     public String registerUser(Guest user) {
 
         if(!UtilitiesGeneral.isValidEmail(user.getUsername()))  return "Invalid data";
@@ -52,8 +51,6 @@ public class UserService {
 
         return userRepository.getUserInfo(userName);
     }
-
-
 
     public HashMap<String,String> login(Guest guestUser) {
 

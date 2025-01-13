@@ -29,13 +29,13 @@ public class FoodController {
     }
 
     @PutMapping("/secured/update")
-    public ResponseEntity<String> updateDiet(@RequestBody FoodItem foodItem, @RequestHeader("Authorization") String authorizationHeader){
+    public ResponseEntity<String> updateFoodItemByFoodName(@RequestBody FoodItem foodItem, @RequestHeader("Authorization") String authorizationHeader){
         String response = foodService.updateFoodItemByFoodName(foodItem,authorizationHeader);
         return new ResponseEntity<>(response, UtilitiesGeneral.checkHttpStatus(response));
     }
 
     @DeleteMapping("/secured/delete/{foodName}")
-    public ResponseEntity<String> deleteSubscription(@PathVariable String foodName, @RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<String> deleteFoodItem(@PathVariable String foodName, @RequestHeader("Authorization") String authorizationHeader) {
 
         String response = foodService.deleteFoodItem(foodName, authorizationHeader);
 

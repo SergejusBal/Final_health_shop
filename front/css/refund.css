@@ -1,0 +1,176 @@
+.center-content {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.main-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.paragraf{
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 18px;    
+    line-height: 1.6;  
+    padding-top: 15px;  
+    margin: 0px;
+    color: #ffffff; 
+    text-align:justify;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+}
+
+.action-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1e6f29; 
+    color: #f0fdf4;    
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.action-button:hover {
+    background-color: #174f1f; 
+    transform: scale(1.05); 
+    cursor: pointer;
+}
+
+.controlPannel {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px; 
+    width: 800px; 
+    text-align: left; 
+    align-self: center;
+}
+
+.controlPannel h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+
+.controlPannel input, .controlPannel textarea, .controlPannel select {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+
+
+.columnDiv {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px;
+    padding: 20px;  
+    
+}
+.columnDivCards {
+    display: none;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+    padding: 20px;     
+    
+}
+
+.columnDivPriceCategory {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px;
+    padding: 20px;  
+    
+}
+
+.productCart {
+    border: 2px inset  rgb(20, 44, 0); 
+    width: 400px;
+    height: 600px;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 10px;
+    background-color:rgba(0, 255, 64, 0.2); 
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif; 
+}
+
+.productCart img{    
+    width: 300px;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 25px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.productCart p {
+    height: 100px; 
+    display: flex;
+    align-items: top; 
+    justify-content: center; 
+    text-align:justify;
+    padding: 10px; 
+    box-sizing: border-box;    
+    color: rgb(160, 255, 175);
+    font-size: 20px; 
+}
+
+.productCart label {    
+    align-items: top; 
+    justify-content: left; 
+    text-align:justify;    
+    box-sizing: border-box;    
+    color: rgb(28, 221, 57);
+    font-size: 16px; 
+    font-weight:700;
+}
+
+
+.buttonDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;   
+}
+
+@media (max-width: 800px) {
+    .button-container, .buttonDiv{
+        flex-direction: column;
+    }
+    .controlPannel{
+        width: 400px;
+    }
+    .columnDiv {
+        grid-template-columns: 1fr; 
+    }  
+    .columnDivCards {       
+        grid-template-columns: 1fr; 
+    }
+
+}
+
+@media (801px <= width <= 1400px) {
+    .columnDivCards {       
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    
+} 

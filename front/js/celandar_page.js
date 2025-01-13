@@ -12,7 +12,7 @@ document.getElementById("serviceCategories").addEventListener('click', function 
 
 async function setToWebSocketChooces() {
 
-    let data = await getWebsocketMap()
+    let data = await getWebsocketMap();
     const selectElement = document.getElementById("serviceCategories"); 
 
    
@@ -34,12 +34,12 @@ async function setToWebSocketChooces() {
     }
 }
 
-function signInRegister(){
+async function signInRegister(){
     openSignIn();    
 
-    let timer = setInterval(function() {
+    let timer = setInterval(async function() {
         let flag = checkRole();
-        if (flag) {          
+        if (flag) {    
             loadRegisterPage();
             clearInterval(timer);
         }
@@ -162,10 +162,13 @@ function getUniqueTimes(data) {
 
 function createHeaderRow(table, dates) {
     const headerRow = table.insertRow();
+    let i = 0;
     dates.forEach(date => {
         const th = document.createElement("th");
         th.textContent = date.substring(5);
+        if(i>=10) th.className = "hideElement";  
         headerRow.appendChild(th);
+        i++;
     });
 }
 
@@ -175,11 +178,14 @@ function createTimeRows(table, dates, times, data) {
     let hiddenContainer = document.getElementById("hiddenValueContainer");
     times.forEach(time => {
         const row = table.insertRow();
+        let i = 0;
         dates.forEach(date => {
             const cell = row.insertCell();
             const key = date + "T" + time;
             cell.id = key;
-           
+            
+            if(i>=10) cell.className = "hideElement";              
+            
             let hiddenValue = document.createElement('input');
             hiddenValue.type = "hidden";
             hiddenValue.value = data[key]; 
@@ -187,6 +193,7 @@ function createTimeRows(table, dates, times, data) {
             hiddenContainer.appendChild(hiddenValue);
            
             setCellContent(cell, data, key, time);
+            i++;
         });
     });
 }
