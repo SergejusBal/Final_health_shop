@@ -1,0 +1,1663 @@
+openapi: 3.0.0
+info:
+  title: Healthy life shop API
+  description: >
+    API documentation for the controllers of the Healthy Shop application. This API serves as the backbone of the Healthy Shop platform, 
+    facilitating all functionalities of the shop, including managing products, users, orders, and dietary services. 
+    The shop offers a range of health-focused products, such as organic food items and supplements. 
+
+    Additionally, it provides services to create personalized diet plans and features a calorie calculator to assist users 
+    in achieving their health and fitness goals. This documentation outlines the structure of the API and will be expanded 
+    step-by-step to include detailed endpoints for each controller.
+  version: 1.0.0
+
+tags:
+  - name: Admin Operations
+    description: Endpoints for managing users, roles, privileges, specializations, and subscriptions in the system.
+  - name: Date Registration
+    description: Endpoints for managing websocket celandar registrations and schedules.
+  - name: Employee Operations
+    description: Endpoints for managing employees and their specializations in the shop.
+  - name: Food Management
+    description: Endpoints for managing food items available in the shop.
+  - name: Guest Operations
+    description: Endpoints for managing guest-related operations and information.
+  - name: No Filter
+    description: Endpoints without filter.
+  - name: Order Management
+    description: Endpoints for managing customer orders, including order creation, updates, and deletions.
+  - name: Product Management
+    description: Endpoints for managing shop products, including additions, updates, and deletions.
+  - name: Stripe Integration
+    description: Endpoints for managing Stripe payment processing and refunds.
+  - name: User Operations
+    description: Endpoints for managing user profiles, authentication, and user-specific operations.
+
+paths:
+  /admin/get/user/{username}:
+    get:
+      tags:
+        - Admin Operations
+      summary: Get user details by username
+      operationId: getUser
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user to retrieve.
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '204':
+          description: No user content available.
+        '401':
+          description: Unauthorized access.
+          
+  /admin/modify/role/{username}/{role}:
+    put:
+      tags:
+        - Admin Operations
+      summary: Modify a user's role
+      operationId: changeUserRole
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user whose role is being modified.
+          schema:
+            type: string
+        - name: role
+          in: path
+          required: true
+          description: The new role to assign to the user.
+          schema:
+            type: string
+            enum:
+              - ADMIN
+              - GUEST
+              - REGULAR
+              - EMPLOYEE
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User role modified successfully.
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: User not found.
+          
+  /admin/add/privileges/{username}/{privileges}:
+    put:
+      tags:
+        - Admin Operations
+      summary: Add privileges to a user
+      operationId: addUserPrivileges
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user to add privileges to.
+          schema:
+            type: string
+        - name: privileges
+          in: path
+          required: true
+          description: The privilege to add to the user.
+          schema:
+            type: string
+            enum:
+              - MODIFY_USERS
+              - MODIFY_PRODUCTS
+              - MODIFY_DIET_PLANS
+              - MODIFY_FOOD_ITEMS
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Privilege added successfully.
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: User not found.
+          
+  /admin/delete/privileges/{username}/{privileges}:
+    delete:
+      tags:
+        - Admin Operations
+      summary: Delete privileges from a user
+      operationId: deleteUserPrivileges
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user from whom privileges will be removed.
+          schema:
+            type: string
+        - name: privileges
+          in: path
+          required: true
+          description: The privilege to remove from the user.
+          schema:
+            type: string
+            enum:
+              - MODIFY_USERS
+              - MODIFY_PRODUCTS
+              - MODIFY_DIET_PLANS
+              - MODIFY_FOOD_ITEMS
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Privilege deleted successfully.
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: User or privilege not found.
+          
+  /admin/add/specialization/{username}/{specialization}:
+    put:
+      tags:
+        - Admin Operations
+      summary: Add a specialization to a user
+      operationId: addUserSpecialization
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user to add a specialization to.
+          schema:
+            type: string
+        - name: specialization
+          in: path
+          required: true
+          description: The specialization to add to the user.
+          schema:
+            type: string
+            enum:
+              - DIETITIAN
+              - TRAINER
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Specialization added successfully.
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: User or specialization not found.
+          
+  /admin/delete/specialization/{username}/{specialization}:
+    delete:
+      tags:
+        - Admin Operations
+      summary: Delete a specialization from a user
+      operationId: deleteUserSpecialization
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user from whom the specialization will be removed.
+          schema:
+            type: string
+        - name: specialization
+          in: path
+          required: true
+          description: The specialization to remove from the user.
+          schema:
+            type: string
+            enum:
+              - DIETITIAN
+              - TRAINER
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Specialization deleted successfully.
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: User or specialization not found.
+          
+  /admin/add/subscription/{username}:
+    put:
+      tags:
+        - Admin Operations
+      summary: Add a subscription to a user
+      operationId: addUserSubscription
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user to add a subscription to.
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subscription added successfully.
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: User not found.
+          
+  /admin/modify/subscription/{username}/{status}:
+    put:
+      tags:
+        - Admin Operations
+      summary: Modify a user's subscription status
+      operationId: modifyUserSubscription
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user whose subscription status will be modified.
+          schema:
+            type: string
+        - name: status
+          in: path
+          required: true
+          description: The new subscription status (true for active, false for inactive).
+          schema:
+            type: boolean
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subscription status modified successfully.
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: User not found.
+          
+  /admin/delete/subscription/{username}:
+    delete:
+      tags:
+        - Admin Operations
+      summary: Delete a user's subscription
+      operationId: deleteUserSubscription
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user whose subscription will be deleted.
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subscription deleted successfully.
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: User not found.
+          
+  /date/get/{webSocketKey}:
+    get:
+      tags:
+        - Date Registration
+      summary: Retrieve registered dates for a specific WebSocket key
+      operationId: getDates
+      parameters:
+        - name: webSocketKey
+          in: path
+          required: true
+          description: The key used to identify the WebSocket.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved dates.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                  format: date-time
+                  description: A map of registered dates with their corresponding statuses.
+        '204':
+          description: No content found for the given WebSocket key.
+        '401':
+          description: Unauthorized access.
+          
+  /employee/get/{paymentStatus}/{day}:
+    get:
+      tags:
+        - Employee Operations
+      summary: Get service orders by payment status and day
+      operationId: getServiceOrdersByEmployeeAndDay
+      parameters:
+        - name: paymentStatus
+          in: path
+          required: true
+          description: The payment status of the orders (e.g., PENDING, COMPLETED).
+          schema:
+            type: string
+            enum:
+              - PENDING
+              - COMPLETED
+              - PAID
+              - FAILED
+              - CANCELLED
+              - REFUNDED
+        - name: day
+          in: path
+          required: true
+          description: The day to filter orders by (YYYY-MM-DD).
+          schema:
+            type: string
+            format: date
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved service orders.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeSlotOrderDTO'
+        '204':
+          description: No orders found for the specified criteria.
+        '401':
+          description: Unauthorized access.
+  /employee/set/{paymentStatus}/order/{orderID}:
+    get:
+      tags:
+        - Employee Operations
+      summary: Set the payment status of an order
+      operationId: setPaymentStatus
+      parameters:
+        - name: paymentStatus
+          in: path
+          required: true
+          description: The payment status to set for the order.
+          schema:
+            type: string
+            enum:
+              - PENDING
+              - COMPLETED
+              - PAID
+              - FAILED
+              - CANCELLED
+              - REFUNDED
+        - name: orderID
+          in: path
+          required: true
+          description: The ID of the order to update the payment status for.
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment status updated successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: Order not found.
+  /food/user/get/{foodName}:
+    get:
+      tags:
+        - Food Management
+      summary: Retrieve details of a specific food item
+      operationId: getFoodItem
+      parameters:
+        - name: foodName
+          in: path
+          required: true
+          description: The name of the food item to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Food item retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FoodItem'
+        '404':
+          description: Food item not found.
+        '401':
+          description: Unauthorized access.
+  /food/secured/new:
+    post:
+      tags:
+        - Food Management
+      summary: Register a new food item
+      operationId: registerFoodItem
+      requestBody:
+        description: The details of the new food item to be registered.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FoodItem'
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Food item registered successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized access.
+        '400':
+          description: Invalid request body or data.
+        '409':
+          description: Food item already exists.
+          
+  /food/secured/update:
+    put:
+      tags:
+        - Food Management
+      summary: Update a food item by its name
+      operationId: updateFoodItemByFoodName
+      requestBody:
+        description: The updated details of the food item.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FoodItem'
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Food item updated successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized access.
+        '400':
+          description: Invalid request body or data.
+        '404':
+          description: Food item not found.
+          
+  /food/secured/delete/{foodName}:
+    delete:
+      tags:
+        - Food Management
+      summary: Delete a food item by its name
+      operationId: deleteFoodItem
+      parameters:
+        - name: foodName
+          in: path
+          required: true
+          description: The name of the food item to delete.
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Food item deleted successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: Food item not found.
+  /guest/register:
+    post:
+      tags:
+        - Guest Operations
+      summary: Register a new guest user
+      operationId: registerUser
+      requestBody:
+        description: The details of the guest user to be registered.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Guest'
+      responses:
+        '200':
+          description: User registered successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Invalid request body or data.
+        '401':
+          description: Unauthorized access.
+        '409':
+          description: User already exists.
+          
+  /guest/login:
+    post:
+      tags:
+        - Guest Operations
+      summary: Authenticate a guest user and generate a JWT token
+      operationId: loginUser
+      requestBody:
+        description: The login credentials of the guest user.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Guest'
+      responses:
+        '200':
+          description: Login successful. Returns a JWT token.
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: JWT token for authenticated access.
+        '401':
+          description: Unauthorized access. Invalid credentials.
+        '400':
+          description: Invalid request body or data.
+          
+  /refresh:
+    get:
+      tags:
+        - No Filter
+      summary: Refresh the JWT token
+      operationId: refreshToken
+      parameters:
+        - name: Authorization
+          in: header
+          required: false
+          description: Existing JWT token. If not provided, a new guest token will be generated.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully refreshed or generated a new JWT token.
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: Refreshed or newly generated JWT token.
+                
+  /stripe/{userUUID}/{secretUUID}/{paymentID}:
+    get:
+      tags:
+        - No Filter
+      summary: Handle Stripe payment status and redirect to a success page
+      operationId: stripeRedirect
+      parameters:
+        - name: userUUID
+          in: path
+          required: true
+          description: UUID of the user associated with the payment.
+          schema:
+            type: string
+        - name: secretUUID
+          in: path
+          required: true
+          description: Secret UUID for verifying the payment process.
+          schema:
+            type: string
+        - name: paymentID
+          in: path
+          required: true
+          description: ID of the payment being processed.
+          schema:
+            type: integer
+      responses:
+        '302':
+          description: Redirects to the success page after handling the payment.
+          headers:
+            Location:
+              description: URL to redirect the user (e.g., `/success.html`).
+              schema:
+                type: string
+        '400':
+          description: Bad request due to invalid parameters.
+          
+  /stripe/{userUUID}/{paymentID}:
+    get:
+      tags:
+        - No Filter
+      summary: Handle Stripe payment failure and redirect to a failure page
+      operationId: stripePaymentFailureRedirect
+      parameters:
+        - name: userUUID
+          in: path
+          required: true
+          description: UUID of the user associated with the payment.
+          schema:
+            type: string
+        - name: paymentID
+          in: path
+          required: true
+          description: ID of the payment being processed.
+          schema:
+            type: integer
+      responses:
+        '302':
+          description: Redirects to the failure page after handling the payment.
+          headers:
+            Location:
+              description: URL to redirect the user (e.g., `/fail.html`).
+              schema:
+                type: string
+        '400':
+          description: Bad request due to invalid parameters.
+          
+  /order/public/new:
+    post:
+      tags:
+        - Order Management
+      summary: Register a new order
+      operationId: registerOrder
+      requestBody:
+        description: The details of the order to be registered.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingOrder'
+      responses:
+        '200':
+          description: Order registered successfully.
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: The ID of the newly created order.
+        '409':
+          description: Conflict. Order could not be registered due to a duplicate entry.
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: Order ID returned as 0, indicating a conflict.
+        '400':
+          description: Bad request. Invalid order details provided.
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: Order ID returned as a negative value, indicating a failure.
+        '401':
+          description: Unauthorized access.
+          
+  /order/secured/update:
+    put:
+      tags:
+        - Order Management
+      summary: Update an existing order
+      operationId: updateOrder
+      requestBody:
+        description: The updated details of the order.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingOrder'
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order updated successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized access. Invalid or missing JWT token.
+        '400':
+          description: Bad request. Invalid order details provided.
+        '404':
+          description: Order not found.
+          
+  /order/secured/get/{orderID}:
+    get:
+      tags:
+        - Order Management
+      summary: Retrieve a billing order by its ID
+      operationId: getOrderByID
+      parameters:
+        - name: orderID
+          in: path
+          required: true
+          description: The unique ID of the order to retrieve.
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingOrder'
+        '401':
+          description: Unauthorized access. Invalid or missing JWT token.
+        '404':
+          description: Order not found.
+          
+  /order/secured/get/all/{paymentStatus}:
+    get:
+      tags:
+        - Order Management
+      summary: Retrieve all orders with a specific payment status
+      operationId: getAllOrders
+      parameters:
+        - name: paymentStatus
+          in: path
+          required: true
+          description: The payment status to filter orders by.
+          schema:
+            type: string
+            enum:
+              - PENDING
+              - COMPLETED
+              - PAID
+              - FAILED
+              - CANCELLED
+              - REFUNDED
+        - name: limit
+          in: query
+          required: true
+          description: The maximum number of orders to return.
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: true
+          description: The starting position for the list of orders.
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the list of orders.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BillingOrder'
+        '204':
+          description: No orders found for the specified criteria.
+        '401':
+          description: Unauthorized access. Invalid or missing JWT token.
+          
+  /order/secured/set/{paymentStatus}/order/{orderID}:
+    get:
+      tags:
+        - Order Management
+      summary: Update the payment status of an order
+      parameters:
+        - name: paymentStatus
+          in: path
+          required: true
+          description: The new payment status to set for the order.
+          schema:
+            type: string
+            enum:
+              - PENDING
+              - COMPLETED
+              - PAID
+              - FAILED
+              - CANCELLED
+              - REFUNDED
+        - name: orderID
+          in: path
+          required: true
+          description: The ID of the order to update.
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment status updated successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized access. Invalid or missing JWT token.
+        '400':
+          description: Bad request. Invalid parameters or data.
+        '404':
+          description: Order not found.
+          
+  /product/public/{productID}:
+    get:
+      tags:
+        - Product Management
+      summary: Retrieve a product by its ID
+      operationId: getProductById
+      parameters:
+        - name: productID
+          in: path
+          required: true
+          description: The unique ID of the product to retrieve.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found.
+        '401':
+          description: Unauthorized access
+          
+  /product/public/precise/{productName}:
+    get:
+      tags:
+        - Product Management
+      summary: Retrieve a product by its exact name
+      operationId: getProductsByNamePrecise
+      parameters:
+        - name: productName
+          in: path
+          required: true
+          description: The exact name of the product to retrieve.
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: false
+          description: JWT token for optional authorization (if applicable).
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: Product not found.
+          
+  /product/public/category/{category}:
+    get:
+      tags:
+        - Product Management
+      summary: Retrieve a list of products by category
+      operationId: getProductsByCategory
+      parameters:
+        - name: category
+          in: path
+          required: true
+          description: The category of the products to retrieve.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: true
+          description: The maximum number of products to return.
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: true
+          description: The starting position for the list of products (for pagination).
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved the list of products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '204':
+          description: No products found in the specified category.
+        '401':
+          description: Unauthorized access.
+  /product/public/name/:
+    get:
+      tags:
+        - Product Management
+      summary: Retrieve products by name (default or empty search)
+      operationId: getProductsByNameDefault
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          description: The maximum number of products to return.
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: true
+          description: The starting position for the list of products (for pagination).
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved the list of products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '204':
+          description: No products found.
+          
+  /product/public/name/{productName}:
+    get:
+      tags:
+        - Product Management
+      summary: Retrieve products by a specific name
+      operationId: getProductsByName
+      parameters:
+        - name: productName
+          in: path
+          required: true
+          description: The name of the product to search for.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: true
+          description: The maximum number of products to return.
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: true
+          description: The starting position for the list of products (for pagination).
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved the list of products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '204':
+          description: No products found.
+        '401':
+          description: Unauthorized access.
+          
+  /product/public/id/name/{productName}:
+    get:
+      tags:
+        - Product Management
+      summary: Retrieve the product ID by product name
+      operationId: getProductIdByName
+      parameters:
+        - name: productName
+          in: path
+          required: true
+          description: The name of the product to retrieve the ID for.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the product ID.
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: The ID of the product corresponding to the provided name.
+        '404':
+          description: Product not found.
+        '401':
+          description: Unauthorized access.
+  /product/secured/new:
+    post:
+      tags:
+        - Product Management
+      summary: Register a new product
+      operationId: registerProduct
+      requestBody:
+        description: The product details to register.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product registered successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request. Invalid product details provided.
+        '401':
+          description: Unauthorized access. Invalid or missing JWT token.
+        '409':
+          description: Conflict. Product already exists.
+          
+  /product/secured/service/new/{employeeName}:
+    post:
+      tags:
+        - Product Management
+      summary: Register a new service product associated with an employee
+      operationId: registerService
+      requestBody:
+        description: The service product details to register.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      parameters:
+        - name: employeeName
+          in: path
+          required: true
+          description: The name of the employee associated with the service.
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Service product registered successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request. Invalid product or employee details provided.
+        '401':
+          description: Unauthorized access. Invalid or missing JWT token.
+        '409':
+          description: Conflict. Service product already exists.
+          
+  /product/secured/update/{productID}:
+    put:
+      tags:
+        - Product Management
+      summary: Update an existing product by its ID
+      operationId: updateProductById
+      requestBody:
+        description: The updated product details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      parameters:
+        - name: productID
+          in: path
+          required: true
+          description: The unique ID of the product to update.
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product updated successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request. Invalid product details or parameters.
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: Product not found.
+          
+  /product/secured/delete/{nameOrProductID}:
+    delete:
+      tags:
+        - Product Management
+      summary: Delete a product by its name or ID
+      operationId: deleteProduct
+      parameters:
+        - name: nameOrProductID
+          in: path
+          required: true
+          description: The name or unique ID of the product to delete.
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product deleted successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request. Invalid product details or parameters.
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: Product not found.
+          
+  /stripe/pay/{orderID}:
+    post:
+      tags:
+        - Stripe Integration
+      summary: Create a Stripe checkout session for a given order
+      operationId: createCheckoutSession
+      parameters:
+        - name: orderID
+          in: path
+          required: true
+          description: The unique ID of the order to create a checkout session for.
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stripe checkout session created successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: The ID of the created Stripe session.
+        '404':
+          description: Order not found or Stripe service unavailable.
+          content:
+            text/plain:
+              schema:
+                type: string
+                
+  /stripe/refund/key/{refundKey}:
+    get:
+      tags:
+        - Stripe Integration
+      summary: Process a refund based on the provided refund key
+      operationId: refund
+      parameters:
+        - name: refundKey
+          in: path
+          required: true
+          description: The key identifying the refund to process.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Refund processed successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Invalid refund key or request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: Refund key not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+                
+  /user/modify/profile:
+    put:
+      tags:
+        - User Operations
+      summary: Update the user's profile
+      operationId: updateUserProfile
+      requestBody:
+        description: Updated profile information.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User profile updated successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request. Invalid profile data provided.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized. Invalid or missing JWT token.
+        '404':
+          description: Profile not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+                
+  /user/get/profile/{userUUID}:
+    get:
+      tags:
+        - User Operations
+      summary: Retrieve a user's profile by UUID
+      operationId: getUserProfile
+      parameters:
+        - name: userUUID
+          in: path
+          required: true
+          description: The UUID of the user whose profile is to be retrieved.
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          description: JWT token for authorization.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the user's profile.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '204':
+          description: No profile found for the specified user UUID.
+        '401':
+          description: Unauthorized access. Invalid or missing JWT token.
+
+ 
+components:
+  schemas:
+    Profile:
+      type: object
+      properties:
+        ID:
+          type: integer
+          description: Unique ID of the profile.
+        userUUID:
+          type: string
+          description: UUID of the associated user.
+        email:
+          type: string
+          description: Email of the user.
+        phoneNumber:
+          type: string
+          description: Phone number of the user.
+        address:
+          type: string
+          description: Address of the user.
+        firstName:
+          type: string
+          description: First name of the user.
+        lastName:
+          type: string
+          description: Last name of the user.
+        dateOfBirth:
+          type: string
+          format: date
+          description: Date of birth of the user.
+        height:
+          type: number
+          format: float
+          description: Height of the user in meters.
+        weight:
+          type: number
+          format: float
+          description: Weight of the user in kilograms.
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of the product.
+        name:
+          type: string
+          description: Name of the product.
+        description:
+          type: string
+          description: Description of the product.
+        price:
+          type: number
+          format: float
+          description: Price of the product.
+        category:
+          type: string
+          description: Category of the product.
+        imageUrl:
+          type: string
+          description: URL of the product's image.
+
+    TimeSlotOrderDTO:
+      type: object
+      properties:
+        timeSlot:
+          type: string
+          format: date-time
+          description: Reserved time slot for the order.
+        employeeUuid:
+          type: string
+          description: UUID of the assigned employee.
+        userUUID:
+          type: string
+          description: UUID of the user placing the order.
+        orderId:
+          type: integer
+          description: ID of the order.
+        customerName:
+          type: string
+          description: Name of the customer.
+        customerPhone:
+          type: string
+          description: Phone number of the customer.
+        customerEmail:
+          type: string
+          description: Email of the customer.
+        productId:
+          type: integer
+          description: ID of the ordered product.
+        paymentStatus:
+          type: string
+          description: Status of the payment.
+
+    WebSocketDTO:
+      type: object
+      properties:
+        reservedTime:
+          type: string
+          format: date-time
+          description: Reserved time for the WebSocket connection.
+        userUUID:
+          type: string
+          description: UUID of the user.
+
+    FoodItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of the food item.
+        food:
+          type: string
+          description: Name of the food item.
+        calories:
+          type: number
+          format: float
+          description: Caloric content of the food item.
+        proteins:
+          type: number
+          format: float
+          description: Protein content of the food item (in grams).
+        fats:
+          type: number
+          format: float
+          description: Fat content of the food item (in grams).
+        carbohydrates:
+          type: number
+          format: float
+          description: Carbohydrate content of the food item (in grams).
+        fibers:
+          type: number
+          format: float
+          description: Fiber content of the food item (in grams).
+
+    BillingOrder:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of the billing order.
+        customerName:
+          type: string
+          description: Name of the customer.
+        customerEmail:
+          type: string
+          description: Email of the customer.
+        customerAddress:
+          type: string
+          description: Address of the customer.
+        orderCart:
+          type: string
+          description: Details of the ordered cart in string format.
+        paymentStatus:
+          $ref: '#/components/schemas/PaymentStatus'
+        promoCode:
+          type: string
+          description: Applied promotional code.
+        customerPhone:
+          type: string
+          description: Phone number of the customer.
+        userUUID:
+          type: string
+          description: UUID of the user associated with the order.
+
+    CartItem:
+      type: object
+      properties:
+        productId:
+          type: integer
+          description: Unique ID of the product in the cart.
+        category:
+          type: string
+          description: Category of the product.
+        name:
+          type: string
+          description: Name of the product.
+        quantity:
+          type: integer
+          description: Quantity of the product in the cart.
+
+    PaymentStatus:
+      type: string
+      enum:
+        - PENDING
+        - COMPLETED
+        - PAID
+        - FAILED
+        - CANCELLED
+        - REFUNDED
+      description: Status of the payment.
+    
+    User:
+      type: object
+      properties:
+        ID:
+          type: integer
+          description: Unique identifier of the user.
+        UUID:
+          type: string
+          description: Universally unique identifier of the user.
+        Username:
+          type: string
+          description: Username of the user.
+        Password:
+          type: string
+          description: Password of the user. (Sensitive - exclude in responses)
+        Role:
+          $ref: '#/components/schemas/Role'
+
+    Admin:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            Privileges:
+              type: array
+              items:
+                $ref: '#/components/schemas/Privileges'
+
+    Employee:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            Specializations:
+              type: array
+              items:
+                $ref: '#/components/schemas/Specialization'
+
+    RegularUser:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            Subscription:
+              type: boolean
+              description: Indicates if the user has an active subscription.
+
+    Guest:
+      allOf:
+        - $ref: '#/components/schemas/User'
+
+    Privileges:
+      type: string
+      enum:
+        - MODIFY_USERS
+        - MODIFY_PRODUCTS
+        - MODIFY_DIET_PLANS
+        - MODIFY_FOOD_ITEMS
+
+    Role:
+      type: string
+      enum:
+        - ADMIN
+        - GUEST
+        - REGULAR
+        - EMPLOYEE
+
+    Specialization:
+      type: string
+      enum:
+        - DIETITIAN
+        - TRAINER
+    
